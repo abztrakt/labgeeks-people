@@ -9,7 +9,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding model 'UserProfile'
-        db.create_table('people_userprofile', (
+        db.create_table('labgeeks_people_userprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], unique=True)),
             ('hp', self.gf('django.db.models.fields.IntegerField')()),
@@ -23,14 +23,14 @@ class Migration(SchemaMigration):
             ('phone', self.gf('django.db.models.fields.CharField')(max_length=12, blank=True)),
             ('alt_phone', self.gf('django.db.models.fields.CharField')(max_length=12, blank=True)),
         ))
-        db.send_create_signal('people', ['UserProfile'])
+        db.send_create_signal('labgeeks_people', ['UserProfile'])
 
         pass
 
     def backwards(self, orm):
         
         # Deleting model 'UserProfile'
-        db.delete_table('people_userprofile')
+        db.delete_table('labgeeks_people_userprofile')
 
 
     models = {
@@ -70,7 +70,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'people.userprofile': {
+        'labgeeks_people.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'about_me': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'alt_phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'blank': 'True'}),
@@ -87,4 +87,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['people']
+    complete_apps = ['labgeeks_people']

@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
-from schedule.models import TimePeriod as s_TimePeriod
+from labgeeks_schedule.models import TimePeriod as s_TimePeriod
 
 
 class EmploymentStatus(models.Model):

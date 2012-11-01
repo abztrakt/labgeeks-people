@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from labgeeksrpg.people.models import *
+from labgeeks_people.models import *
 import os
 
 

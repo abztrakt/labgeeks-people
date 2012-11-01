@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('labgeeksrpg.people.views',
+urlpatterns = patterns('labgeeks_people.views',
                        url(r'^(?P<name>\w+)/$', 'view_profile', name="People-View_Profile"),
                        url(r'^(?P<name>\w+)/edit/$', 'create_user_profile', name="People-Create_Profile"),
                        url(r'^(?P<user>\w+)/review/$', 'edit_reviews', name="People-Edit_Reviews"),

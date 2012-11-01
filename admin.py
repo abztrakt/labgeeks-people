@@ -1,4 +1,4 @@
-from labgeeksrpg.people.models import *
+from labgeeks_people.models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User

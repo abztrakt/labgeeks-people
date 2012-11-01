@@ -9,13 +9,13 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding field 'PayGrade.wage'
-        db.add_column('people_paygrade', 'wage', self.gf('django.db.models.fields.FloatField')(default=0.0), keep_default=False)
+        db.add_column('labgeeks_people_paygrade', 'wage', self.gf('django.db.models.fields.FloatField')(default=0.0), keep_default=False)
 
 
     def backwards(self, orm):
         
         # Deleting field 'PayGrade.wage'
-        db.delete_column('people_paygrade', 'wage')
+        db.delete_column('labgeeks_people_paygrade', 'wage')
 
 
     models = {
@@ -55,14 +55,14 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'people.employmentstatus': {
+        'labgeeks_people.employmentstatus': {
             'Meta': {'object_name': 'EmploymentStatus'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.paygrade': {
+        'labgeeks_people.paygrade': {
             'Meta': {'object_name': 'PayGrade'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -70,23 +70,23 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
             'wage': ('django.db.models.fields.FloatField', [], {})
         },
-        'people.timeperiod': {
+        'labgeeks_people.timeperiod': {
             'Meta': {'object_name': 'TimePeriod'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.title': {
+        'labgeeks_people.title': {
             'Meta': {'object_name': 'Title'},
             'description': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'pay_grade': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.PayGrade']"}),
+            'pay_grade': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.PayGrade']"}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
-            'workgroup': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.WorkGroup']"})
+            'workgroup': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.WorkGroup']"})
         },
-        'people.userprofile': {
+        'labgeeks_people.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'about_me': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'alt_phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'blank': 'True'}),
@@ -98,13 +98,13 @@ class Migration(SchemaMigration):
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'blank': 'True'}),
             'staff_photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateField', [], {}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.EmploymentStatus']"}),
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.EmploymentStatus']"}),
             'supervisor': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'supervisor'", 'to': "orm['auth.User']"}),
-            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Title']"}),
+            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.Title']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'uwnetid'", 'unique': 'True', 'to': "orm['auth.User']"}),
-            'working_periods': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.TimePeriod']"})
+            'working_periods': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.TimePeriod']"})
         },
-        'people.workgroup': {
+        'labgeeks_people.workgroup': {
             'Meta': {'object_name': 'WorkGroup'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -113,4 +113,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['people']
+    complete_apps = ['labgeeks_people']

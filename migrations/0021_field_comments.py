@@ -66,14 +66,14 @@ class Migration(DataMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'people.employmentstatus': {
+        'labgeeks_people.employmentstatus': {
             'Meta': {'object_name': 'EmploymentStatus'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.paygrade': {
+        'labgeeks_people.paygrade': {
             'Meta': {'object_name': 'PayGrade'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -81,7 +81,7 @@ class Migration(DataMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
             'wage': ('django.db.models.fields.FloatField', [], {})
         },
-        'people.performancereview': {
+        'labgeeks_people.performancereview': {
             'Meta': {'object_name': 'PerformanceReview'},
             'comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {}),
@@ -91,16 +91,16 @@ class Migration(DataMigration):
             'reviewer': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'user_review'", 'to': "orm['auth.User']"})
         },
-        'people.title': {
+        'labgeeks_people.title': {
             'Meta': {'object_name': 'Title'},
             'description': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'pay_grade': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.PayGrade']"}),
+            'pay_grade': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.PayGrade']"}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
-            'workgroup': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.WorkGroup']"})
+            'workgroup': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.WorkGroup']"})
         },
-        'people.userprofile': {
+        'labgeeks_people.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'about_me': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'alt_phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'null': 'True', 'blank': 'True'}),
@@ -114,15 +114,15 @@ class Migration(DataMigration):
             'site_skin': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'staff_photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.EmploymentStatus']", 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.EmploymentStatus']", 'null': 'True', 'blank': 'True'}),
             'supervisor': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'supervisor'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Title']", 'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.Title']", 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'uwnetid'", 'unique': 'True', 'to': "orm['auth.User']"}),
-            'wage': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['people.WageHistory']", 'null': 'True', 'blank': 'True'}),
+            'wage': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['labgeeks_people.WageHistory']", 'null': 'True', 'blank': 'True'}),
             'working_periods': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['schedule.TimePeriod']", 'null': 'True', 'blank': 'True'})
         },
-        'people.uwltreview': {
-            'Meta': {'object_name': 'UWLTReview', '_ormbases': ['people.PerformanceReview']},
+        'labgeeks_people.uwltreview': {
+            'Meta': {'object_name': 'UWLTReview', '_ormbases': ['labgeeks_people.PerformanceReview']},
             'attitude': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'attitude_comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'communication': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -137,7 +137,7 @@ class Migration(DataMigration):
             'integrity_comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'missed_shifts': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'missed_shifts_comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'performancereview_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['people.PerformanceReview']", 'unique': 'True', 'primary_key': 'True'}),
+            'performancereview_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['labgeeks_people.PerformanceReview']", 'unique': 'True', 'primary_key': 'True'}),
             'policies': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'policies_comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'procedures': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -153,21 +153,21 @@ class Migration(DataMigration):
             'technical_knowledge': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'technical_knowledge_comments': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
         },
-        'people.wagechangereason': {
+        'labgeeks_people.wagechangereason': {
             'Meta': {'object_name': 'WageChangeReason'},
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '256'})
         },
-        'people.wagehistory': {
+        'labgeeks_people.wagehistory': {
             'Meta': {'object_name': 'WageHistory'},
             'effective_date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'wage': ('django.db.models.fields.FloatField', [], {}),
-            'wage_change_reason': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.WageChangeReason']"})
+            'wage_change_reason': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.WageChangeReason']"})
         },
-        'people.workgroup': {
+        'labgeeks_people.workgroup': {
             'Meta': {'object_name': 'WorkGroup'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -185,4 +185,4 @@ class Migration(DataMigration):
         }
     }
 
-    complete_apps = ['people']
+    complete_apps = ['labgeeks_people']

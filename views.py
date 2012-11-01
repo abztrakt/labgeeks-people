@@ -6,8 +6,8 @@ from django.core.context_processors import csrf
 from datetime import datetime
 from django.http import HttpResponseRedirect, HttpResponse
 import json
-from people.forms import *
-from people.models import *
+from labgeeks_people.forms import *
+from labgeeks_people.models import *
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 

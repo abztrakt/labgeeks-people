@@ -9,55 +9,55 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Changing field 'UserProfile.alt_phone'
-        db.alter_column('people_userprofile', 'alt_phone', self.gf('django.db.models.fields.CharField')(max_length=12, null=True))
+        db.alter_column('labgeeks_people_userprofile', 'alt_phone', self.gf('django.db.models.fields.CharField')(max_length=12, null=True))
 
         # Changing field 'UserProfile.call_me_by'
-        db.alter_column('people_userprofile', 'call_me_by', self.gf('django.db.models.fields.CharField')(max_length=256, null=True))
+        db.alter_column('labgeeks_people_userprofile', 'call_me_by', self.gf('django.db.models.fields.CharField')(max_length=256, null=True))
 
         # Changing field 'UserProfile.end_date'
-        db.alter_column('people_userprofile', 'end_date', self.gf('django.db.models.fields.DateField')(null=True))
+        db.alter_column('labgeeks_people_userprofile', 'end_date', self.gf('django.db.models.fields.DateField')(null=True))
 
         # Changing field 'UserProfile.office'
-        db.alter_column('people_userprofile', 'office', self.gf('django.db.models.fields.CharField')(max_length=256, null=True))
+        db.alter_column('labgeeks_people_userprofile', 'office', self.gf('django.db.models.fields.CharField')(max_length=256, null=True))
 
         # Changing field 'UserProfile.phone'
-        db.alter_column('people_userprofile', 'phone', self.gf('django.db.models.fields.CharField')(max_length=12, null=True))
+        db.alter_column('labgeeks_people_userprofile', 'phone', self.gf('django.db.models.fields.CharField')(max_length=12, null=True))
 
         # Changing field 'UserProfile.about_me'
-        db.alter_column('people_userprofile', 'about_me', self.gf('django.db.models.fields.TextField')(null=True))
+        db.alter_column('labgeeks_people_userprofile', 'about_me', self.gf('django.db.models.fields.TextField')(null=True))
 
         # Changing field 'UserProfile.start_date'
-        db.alter_column('people_userprofile', 'start_date', self.gf('django.db.models.fields.DateField')(null=True))
+        db.alter_column('labgeeks_people_userprofile', 'start_date', self.gf('django.db.models.fields.DateField')(null=True))
 
         # Changing field 'UserProfile.grad_date'
-        db.alter_column('people_userprofile', 'grad_date', self.gf('django.db.models.fields.DateField')(null=True))
+        db.alter_column('labgeeks_people_userprofile', 'grad_date', self.gf('django.db.models.fields.DateField')(null=True))
 
 
     def backwards(self, orm):
         
         # Changing field 'UserProfile.alt_phone'
-        db.alter_column('people_userprofile', 'alt_phone', self.gf('django.db.models.fields.CharField')(default='', max_length=12))
+        db.alter_column('labgeeks_people_userprofile', 'alt_phone', self.gf('django.db.models.fields.CharField')(default='', max_length=12))
 
         # Changing field 'UserProfile.call_me_by'
-        db.alter_column('people_userprofile', 'call_me_by', self.gf('django.db.models.fields.CharField')(default='', max_length=256))
+        db.alter_column('labgeeks_people_userprofile', 'call_me_by', self.gf('django.db.models.fields.CharField')(default='', max_length=256))
 
         # Changing field 'UserProfile.end_date'
-        db.alter_column('people_userprofile', 'end_date', self.gf('django.db.models.fields.DateField')(null=True))
+        db.alter_column('labgeeks_people_userprofile', 'end_date', self.gf('django.db.models.fields.DateField')(null=True))
 
         # Changing field 'UserProfile.office'
-        db.alter_column('people_userprofile', 'office', self.gf('django.db.models.fields.CharField')(max_length=256))
+        db.alter_column('labgeeks_people_userprofile', 'office', self.gf('django.db.models.fields.CharField')(max_length=256))
 
         # Changing field 'UserProfile.phone'
-        db.alter_column('people_userprofile', 'phone', self.gf('django.db.models.fields.CharField')(default='', max_length=12))
+        db.alter_column('labgeeks_people_userprofile', 'phone', self.gf('django.db.models.fields.CharField')(default='', max_length=12))
 
         # Changing field 'UserProfile.about_me'
-        db.alter_column('people_userprofile', 'about_me', self.gf('django.db.models.fields.TextField')(default=''))
+        db.alter_column('labgeeks_people_userprofile', 'about_me', self.gf('django.db.models.fields.TextField')(default=''))
 
         # Changing field 'UserProfile.start_date'
-        db.alter_column('people_userprofile', 'start_date', self.gf('django.db.models.fields.DateField')())
+        db.alter_column('labgeeks_people_userprofile', 'start_date', self.gf('django.db.models.fields.DateField')())
 
         # Changing field 'UserProfile.grad_date'
-        db.alter_column('people_userprofile', 'grad_date', self.gf('django.db.models.fields.DateField')(null=True))
+        db.alter_column('labgeeks_people_userprofile', 'grad_date', self.gf('django.db.models.fields.DateField')(null=True))
 
 
     models = {
@@ -97,14 +97,14 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'people.employmentstatus': {
+        'labgeeks_people.employmentstatus': {
             'Meta': {'object_name': 'EmploymentStatus'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.paygrade': {
+        'labgeeks_people.paygrade': {
             'Meta': {'object_name': 'PayGrade'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -112,23 +112,23 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
             'wage': ('django.db.models.fields.FloatField', [], {})
         },
-        'people.timeperiod': {
+        'labgeeks_people.timeperiod': {
             'Meta': {'object_name': 'TimePeriod'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.title': {
+        'labgeeks_people.title': {
             'Meta': {'object_name': 'Title'},
             'description': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'pay_grade': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.PayGrade']"}),
+            'pay_grade': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.PayGrade']"}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
-            'workgroup': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.WorkGroup']"})
+            'workgroup': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.WorkGroup']"})
         },
-        'people.userprofile': {
+        'labgeeks_people.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'about_me': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'alt_phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'null': 'True', 'blank': 'True'}),
@@ -140,13 +140,13 @@ class Migration(SchemaMigration):
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'null': 'True', 'blank': 'True'}),
             'staff_photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date.fromtimestamp(0)', 'blank': 'True'}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.EmploymentStatus']", 'blank': 'True'}),
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.EmploymentStatus']", 'blank': 'True'}),
             'supervisor': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'supervisor'", 'blank': 'True', 'to': "orm['auth.User']"}),
-            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Title']", 'blank': 'True'}),
+            'title': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.Title']", 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'uwnetid'", 'unique': 'True', 'to': "orm['auth.User']"}),
-            'working_periods': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.TimePeriod']", 'blank': 'True'})
+            'working_periods': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.TimePeriod']", 'blank': 'True'})
         },
-        'people.workgroup': {
+        'labgeeks_people.workgroup': {
             'Meta': {'object_name': 'WorkGroup'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -155,4 +155,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['people']
+    complete_apps = ['labgeeks_people']

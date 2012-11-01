@@ -9,92 +9,92 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding model 'EmploymentStatus'
-        db.create_table('people_employmentstatus', (
+        db.create_table('labgeeks_people_employmentstatus', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, db_index=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
-        db.send_create_signal('people', ['EmploymentStatus'])
+        db.send_create_signal('labgeeks_people', ['EmploymentStatus'])
 
         # Adding model 'TimePeriod'
-        db.create_table('people_timeperiod', (
+        db.create_table('labgeeks_people_timeperiod', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, db_index=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
-        db.send_create_signal('people', ['TimePeriod'])
+        db.send_create_signal('labgeeks_people', ['TimePeriod'])
 
         # Adding model 'WorkGroup'
-        db.create_table('people_workgroup', (
+        db.create_table('labgeeks_people_workgroup', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, db_index=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('manager', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
-        db.send_create_signal('people', ['WorkGroup'])
+        db.send_create_signal('labgeeks_people', ['WorkGroup'])
 
         # Deleting field 'UserProfile.hp'
-        db.delete_column('people_userprofile', 'hp')
+        db.delete_column('labgeeks_people_userprofile', 'hp')
 
         # Deleting field 'UserProfile.currency'
-        db.delete_column('people_userprofile', 'currency')
+        db.delete_column('labgeeks_people_userprofile', 'currency')
 
         # Deleting field 'UserProfile.xp'
-        db.delete_column('people_userprofile', 'xp')
+        db.delete_column('labgeeks_people_userprofile', 'xp')
 
         # Adding field 'UserProfile.call_me_by'
-        db.add_column('people_userprofile', 'call_me_by', self.gf('django.db.models.fields.CharField')(default='', max_length=256, blank=True), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'call_me_by', self.gf('django.db.models.fields.CharField')(default='', max_length=256, blank=True), keep_default=False)
 
         # Adding field 'UserProfile.status'
-        db.add_column('people_userprofile', 'status', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['people.EmploymentStatus']), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'status', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['labgeeks_people.EmploymentStatus']), keep_default=False)
 
         # Adding field 'UserProfile.supervisor'
-        db.add_column('people_userprofile', 'supervisor', self.gf('django.db.models.fields.related.ForeignKey')(default='', related_name='supervisor', to=orm['auth.User']), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'supervisor', self.gf('django.db.models.fields.related.ForeignKey')(default='', related_name='supervisor', to=orm['auth.User']), keep_default=False)
 
         # Adding field 'UserProfile.title'
-        db.add_column('people_userprofile', 'title', self.gf('django.db.models.fields.CharField')(default='', max_length=256, blank=True), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'title', self.gf('django.db.models.fields.CharField')(default='', max_length=256, blank=True), keep_default=False)
 
         # Adding field 'UserProfile.working_periods'
-        db.add_column('people_userprofile', 'working_periods', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['people.TimePeriod']), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'working_periods', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['labgeeks_people.TimePeriod']), keep_default=False)
 
 
     def backwards(self, orm):
         
         # Deleting model 'EmploymentStatus'
-        db.delete_table('people_employmentstatus')
+        db.delete_table('labgeeks_people_employmentstatus')
 
         # Deleting model 'TimePeriod'
-        db.delete_table('people_timeperiod')
+        db.delete_table('labgeeks_people_timeperiod')
 
         # Deleting model 'WorkGroup'
-        db.delete_table('people_workgroup')
+        db.delete_table('labgeeks_people_workgroup')
 
         # Adding field 'UserProfile.hp'
-        db.add_column('people_userprofile', 'hp', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'hp', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
 
         # Adding field 'UserProfile.currency'
-        db.add_column('people_userprofile', 'currency', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'currency', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
 
         # Adding field 'UserProfile.xp'
-        db.add_column('people_userprofile', 'xp', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
+        db.add_column('labgeeks_people_userprofile', 'xp', self.gf('django.db.models.fields.IntegerField')(default=0), keep_default=False)
 
         # Deleting field 'UserProfile.call_me_by'
-        db.delete_column('people_userprofile', 'call_me_by')
+        db.delete_column('labgeeks_people_userprofile', 'call_me_by')
 
         # Deleting field 'UserProfile.status'
-        db.delete_column('people_userprofile', 'status_id')
+        db.delete_column('labgeeks_people_userprofile', 'status_id')
 
         # Deleting field 'UserProfile.supervisor'
-        db.delete_column('people_userprofile', 'supervisor_id')
+        db.delete_column('labgeeks_people_userprofile', 'supervisor_id')
 
         # Deleting field 'UserProfile.title'
-        db.delete_column('people_userprofile', 'title')
+        db.delete_column('labgeeks_people_userprofile', 'title')
 
         # Deleting field 'UserProfile.working_periods'
-        db.delete_column('people_userprofile', 'working_periods_id')
+        db.delete_column('labgeeks_people_userprofile', 'working_periods_id')
 
 
     models = {
@@ -134,21 +134,21 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'people.employmentstatus': {
+        'labgeeks_people.employmentstatus': {
             'Meta': {'object_name': 'EmploymentStatus'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.timeperiod': {
+        'labgeeks_people.timeperiod': {
             'Meta': {'object_name': 'TimePeriod'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
         },
-        'people.userprofile': {
+        'labgeeks_people.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
             'about_me': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'alt_phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'blank': 'True'}),
@@ -159,13 +159,13 @@ class Migration(SchemaMigration):
             'office': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '256', 'blank': 'True'}),
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateField', [], {}),
-            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.EmploymentStatus']"}),
+            'status': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.EmploymentStatus']"}),
             'supervisor': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'supervisor'", 'to': "orm['auth.User']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'uwnetid'", 'unique': 'True', 'to': "orm['auth.User']"}),
-            'working_periods': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.TimePeriod']"})
+            'working_periods': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['labgeeks_people.TimePeriod']"})
         },
-        'people.workgroup': {
+        'labgeeks_people.workgroup': {
             'Meta': {'object_name': 'WorkGroup'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -175,4 +175,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['people']
+    complete_apps = ['labgeeks_people']
