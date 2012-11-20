@@ -5,7 +5,7 @@ tests login, logout and false login
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User, Permission
-from people.models import *
+from labgeeks_people.models import *
 import datetime
 import pdb
 

@@ -6,9 +6,8 @@ from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
-from people.models import *
+from labgeeks_people.models import *
 import datetime
-import pdb
 
 
 class ReviewTestCase(TestCase):

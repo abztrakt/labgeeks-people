@@ -40,12 +40,12 @@ class CreateUWLTReviewForm(CreatePerformanceReviewForm):
         'integrity': 'Adheres to the UW principles and standards of conduct. Actively demonstrates commitment to UW computing policies. Honors commitments, earns trust.',
         'communication': 'Expresses thoughts clearly in a way others understand and accept.',
         'initiative': 'Offers suggestions for new or better methods of operations. Looks for opportunities for self improvment.',
-        'attitude': 'Is enthusiastic, interested, dilligent, and courteous.',
+        'attitude': 'Is enthusiastic, interested, diligent, and courteous.',
         'productivity': 'Takes initiative to complete tasks and achieve goals. Plans and organizes work to improve output. Completes assigned projects by agreed completion date.',
         'technical_knowledge': 'Has increased knowledge of hardware and/or software. Is up to date with the development of the UWTSC technical environment.',
         'responsibility': 'Willingness to take on responsibility.',
         'policies': 'Knows and enforces UW, C&C and staff policies.',
-        'procedures': 'Understands and follows departamental procedures.',
+        'procedures': 'Understands and follows departmental procedures.',
     }
 
     teamwork = forms.ChoiceField(widget=forms.RadioSelect, choices=RANK_CHOICES, help_text=HELP_TEXT_CHOICES['teamwork'], required=False, initial=0)
