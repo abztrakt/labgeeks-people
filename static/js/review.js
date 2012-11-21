@@ -60,10 +60,10 @@ function loadReviewData(data){
         var inline = [
             ' (N/A)',
             ' (unsatisfactory)',
-            ' (needs work)',
-            ' (satisfactory)',
-            ' (very good)',
-            ' (exemplary)'
+            ' (needs improvement)',
+            ' (meets expectations)',
+            ' (exceeds expectations)',
+            ' (outstanding)'
         ];
         var intscore;
         var tooltips = {
