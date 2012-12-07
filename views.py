@@ -16,7 +16,7 @@ def list_all(request):
     """ List all users in the system. (Alphabetically, ignoring case)
     """
     this_user = request.user
-    if this_user.has_perm('people.add_uwltreview'):
+    if this_user.has_perm('labgeeks_people.add_uwltreview'):
         can_add_review = True
     else:
         can_add_review = False
@@ -52,11 +52,11 @@ def view_profile(request, name):
         #User has already created a user profile.
         profile = UserProfile.objects.get(user=user)
 
-        if request.user == user or request.user.has_perm('people.change_userprofile'):
+        if request.user == user or request.user.has_perm('labgeeks_people.change_userprofile'):
             edit = True
-        if request.user == user or request.user.has_perm('people.view_wagehistory'):
+        if request.user == user or request.user.has_perm('labgeeks_people.view_wagehistory'):
             can_view_wage_history = True
-        if request.user == user or request.user.has_perm('people.add_uwltreview'):
+        if request.user == user or request.user.has_perm('labgeeks_people.add_uwltreview'):
             can_view_review = True
 
         return render_to_response('profile.html', locals())
@@ -70,12 +70,12 @@ def create_user_profile(request, name):
     """ This view is called when creating or editing a user profile to the system.
         Allows the user to edit and display certain things about their information.
     """
-    if request.user.__str__() == name or request.user.has_perm('people.change_userprofile'):
+    if request.user.__str__() == name or request.user.has_perm('labgeeks_people.change_userprofile'):
         can_edit = True
     else:
         can_edit = False
 
-    if request.user.__str__() == name or request.user.has_perm('people.add_userprofile'):
+    if request.user.__str__() == name or request.user.has_perm('labgeeks_people.add_userprofile'):
         can_add = True
     else:
         can_add = False
@@ -157,7 +157,7 @@ def view_wage_history(request, user):
     user = User.objects.get(username=user)
     this_user = request.user
 
-    if this_user != user and not this_user.has_perm('people.view_wagehistory'):
+    if this_user != user and not this_user.has_perm('labgeeks_people.view_wagehistory'):
         return render_to_response('403.html', locals(), context_instance=RequestContext(request))
 
     try:
@@ -214,7 +214,7 @@ def edit_reviews(request, user):
     # Grab the user and any reviews they may have.
     user = User.objects.get(username=user)
     this_user = request.user
-    if this_user.has_perm('people.add_uwltreview'):
+    if this_user.has_perm('labgeeks_people.add_uwltreview'):
         can_add_review = True
     else:
         can_add_review = False
@@ -223,7 +223,7 @@ def edit_reviews(request, user):
         # raise Http403 (for django 1.4)
         return render_to_response('403.html', locals(), context_instance=RequestContext(request))
 
-    if this_user.has_perm('people.finalize_uwltreview'):
+    if this_user.has_perm('labgeeks_people.finalize_uwltreview'):
         final_reviewer = True
     else:
         final_reviewer = False
@@ -400,7 +400,7 @@ def view_reviews(request, user):
     this_user = request.user
     user = User.objects.get(username=user)
 
-    if this_user.has_perm('people.finalize_uwltreview'):  # change to people.finalize_review for modularity
+    if this_user.has_perm('labgeeks_people.finalize_uwltreview'):  # change to labgeeks_people.finalize_review for modularity
         final_reviewer = True
     else:
         final_reviewer = False
@@ -469,8 +469,11 @@ def view_review_data(request, user):
     this_user = request.user
     data = request.REQUEST.copy()
     review_id = data.getlist('id')[0]
-    review = UWLTReview.objects.get(id=review_id)
-    if this_user.has_perm('people.finalize_uwltreview') and this_user != user:
+    try:
+        review = UWLTReview.objects.get(id=review_id)
+    except:
+        return render_to_response('403.html', locals(), context_instance=RequestContext(request))
+    if this_user.has_perm('labgeeks_people.finalize_uwltreview') and this_user != user:
         can_finalize_review = True
     else:
         can_finalize_review = False
