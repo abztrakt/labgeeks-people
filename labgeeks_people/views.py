@@ -158,7 +158,7 @@ def view_wage_history(request, user):
     this_user = request.user
 
     if this_user != user and not this_user.has_perm('labgeeks_people.view_wagehistory'):
-        return render_to_response('403.html', locals(), context_instance=RequestContext(request))
+        raise Http403
 
     try:
         histories = WageHistory.objects.filter(user=user).order_by('-effective_date')
@@ -220,8 +220,7 @@ def edit_reviews(request, user):
         can_add_review = False
 
     if not can_add_review:
-        # raise Http403 (for django 1.4)
-        return render_to_response('403.html', locals(), context_instance=RequestContext(request))
+        raise Http403
 
     if this_user.has_perm('labgeeks_people.finalize_uwltreview'):
         final_reviewer = True
@@ -406,8 +405,7 @@ def view_reviews(request, user):
         final_reviewer = False
 
     if not final_reviewer and this_user != user:
-        # raise Http403 (for django 1.4)
-        return render_to_response('403.html', locals(), context_instance=RequestContext(request))
+        raise Http403
 
     try:
         badge_photo = UserProfile.objects.get(user=user).bagde_photo._get_url()
@@ -472,7 +470,7 @@ def view_review_data(request, user):
     try:
         review = UWLTReview.objects.get(id=review_id)
     except:
-        return render_to_response('403.html', locals(), context_instance=RequestContext(request))
+        raise Http403
     if this_user.has_perm('labgeeks_people.finalize_uwltreview') and this_user != user:
         can_finalize_review = True
     else:
