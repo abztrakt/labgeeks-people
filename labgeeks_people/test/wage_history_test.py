@@ -37,7 +37,7 @@ class WageHistoryTestCase(TestCase):
         c = Client()
         c.login(username="Dawg", password='pass')
         resp2 = c.get('/people/BigBoss/wage_history/')
-        self.assertContains(resp2, "security hole")  # can't view other's wage history
+        self.assertEqual(resp2.status_code, 403)  # can't view other's wage history
         resp1 = c.get('/people/Dawg/wage_history/')
         self.assertEqual(resp1.status_code, 200)  # can view his own wage history
         c.logout()

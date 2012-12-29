@@ -9,6 +9,7 @@ import json
 from labgeeks_people.forms import *
 from labgeeks_people.models import *
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.exceptions import PermissionDenied
 
 
 @login_required
@@ -158,7 +159,7 @@ def view_wage_history(request, user):
     this_user = request.user
 
     if this_user != user and not this_user.has_perm('labgeeks_people.view_wagehistory'):
-        raise Http403
+        raise PermissionDenied
 
     try:
         histories = WageHistory.objects.filter(user=user).order_by('-effective_date')
@@ -220,7 +221,7 @@ def edit_reviews(request, user):
         can_add_review = False
 
     if not can_add_review:
-        raise Http403
+        raise PermissionDenied
 
     if this_user.has_perm('labgeeks_people.finalize_uwltreview'):
         final_reviewer = True
@@ -405,7 +406,7 @@ def view_reviews(request, user):
         final_reviewer = False
 
     if not final_reviewer and this_user != user:
-        raise Http403
+        raise PermissionDenied
 
     try:
         badge_photo = UserProfile.objects.get(user=user).bagde_photo._get_url()
@@ -470,7 +471,7 @@ def view_review_data(request, user):
     try:
         review = UWLTReview.objects.get(id=review_id)
     except:
-        raise Http403
+        raise PermissionDenied
     if this_user.has_perm('labgeeks_people.finalize_uwltreview') and this_user != user:
         can_finalize_review = True
     else:

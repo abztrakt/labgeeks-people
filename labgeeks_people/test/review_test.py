@@ -50,9 +50,9 @@ class ReviewTestCase(TestCase):
         self.assertEqual(resp1.status_code, 200)
         self.assertContains(resp1, "Reviews for Dawg")
         resp = c.get('/people/Dawg/review/')
-        self.assertContains(resp, "security hole")
+        self.assertEqual(resp.status_code, 403)
         resp2 = c.get('/people/Manager/view_reviews/')
-        self.assertContains(resp2, "security hole")  # change to 403 when we get django 1.4
+        self.assertEqual(resp2.status_code, 403)
         c.logout()
 
     def testManagerPermissions(self):
@@ -66,13 +66,11 @@ class ReviewTestCase(TestCase):
         self.assertEqual(resp1.status_code, 200)
         self.assertContains(resp1, 'Reviews for Manager')
         resp2 = c.get('/people/Dawg/view_reviews/')
-        self.assertEqual(resp2.status_code, 200)
-        self.assertContains(resp2, 'security hole')
+        self.assertEqual(resp2.status_code, 403)
         resp = c.get('/people/Dawg/review/')
         self.assertEqual(resp.status_code, 200)
         resp3 = c.get('/people/BigBoss/view_reviews/')
-        self.assertEqual(resp3.status_code, 200)
-        self.assertContains(resp3, 'security hole')
+        self.assertEqual(resp3.status_code, 403)
         resp4 = c.get('/people/Manager/view_reviews/info/?id=2')
         self.assertEqual(resp4.status_code, 200)
         resp5 = c.get('/people/Dawg/view_reviews/info/?id=1')
@@ -97,5 +95,5 @@ class ReviewTestCase(TestCase):
         resp4 = c.get('/people/BigBoss/view_reviews/info/?id=3')
         self.assertEqual(resp4.status_code, 200)
         resp5 = c.get('/people/Manager/view_reviews/info/?id=4')
-        self.assertContains(resp5, "security hole")  # change to 403 when we get django 1.4
+        self.assertEqual(resp5.status_code, 403)
         c.logout()
