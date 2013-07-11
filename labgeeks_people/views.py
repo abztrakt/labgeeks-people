@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 import json
 from labgeeks_people.forms import *
 from labgeeks_people.models import *
+from badger.models import Award
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import PermissionDenied
 
@@ -52,7 +53,7 @@ def view_profile(request, name):
     if UserProfile.objects.filter(user=user):
         #User has already created a user profile.
         profile = UserProfile.objects.get(user=user)
-
+        award_list = Award.objects.filter(user=user)
         if request.user == user or request.user.has_perm('labgeeks_people.change_userprofile'):
             edit = True
         if request.user == user or request.user.has_perm('labgeeks_people.view_wagehistory'):

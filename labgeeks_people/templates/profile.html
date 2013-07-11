@@ -108,6 +108,12 @@ $(document).ready(function() {
                 <p>{{profile.about_me}}</p>
             </div>
         </div>
+        <div class="profile_section">
+            <h2 class="section_title"> Awards for {{ user }}</h2>
+            <div class="profile_info_section">
+                {% include "badger/includes/awards_as_badges_list.html" %}
+            </div>
+        </div>
     </div>
 </div>
 
