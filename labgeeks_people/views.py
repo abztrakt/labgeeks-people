@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 import json
 from labgeeks_people.forms import *
 from labgeeks_people.models import *
-from badger.models import Award
+from badger.models import Badge, Award
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import PermissionDenied
 
@@ -50,6 +50,7 @@ def view_profile(request, name):
     """ Show a user profile.
     """
     user = User.objects.get(username=name)
+    badge_list = Badge.objects.filter(creator=user) 
     if UserProfile.objects.filter(user=user):
         #User has already created a user profile.
         profile = UserProfile.objects.get(user=user)
