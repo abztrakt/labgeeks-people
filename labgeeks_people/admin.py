@@ -133,6 +133,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     change_supervisor.short_description = "Change supervisor for selected people"
 admin.site.register(UserProfile, UserProfileAdmin)
 
-UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'is_staff')
+UserAdmin.list_display = ('username', 'first_name', 'last_name', 'is_active', 'is_staff')
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
