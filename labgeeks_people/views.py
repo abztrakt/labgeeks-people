@@ -62,7 +62,7 @@ def view_profile(request, name):
         if request.user == user or request.user.has_perm('labgeeks_people.add_uwltreview'):
             can_view_review = True
 
-        return render_to_response('profile.html', locals())
+        return render_to_response('profile.html', locals(), context_instance=RequestContext(request))
     else:
         #User HAS NOT created a user profile, allow them to create one.
         return create_user_profile(request, name)
