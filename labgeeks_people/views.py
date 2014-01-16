@@ -17,12 +17,14 @@ from django.core.exceptions import PermissionDenied
 def list_all(request):
     """ List all users in the system. (Alphabetically, ignoring case)
     """
+    params = {'request': request,}
     this_user = request.user
     if this_user.has_perm('labgeeks_people.add_uwltreview'):
         can_add_review = True
     else:
         can_add_review = False
-
+    params['can_add_review'] = can_add_review
+    
     #Separate out the list of users by their group association.
     groups = Group.objects.all()
     group_list = []
@@ -41,8 +43,9 @@ def list_all(request):
     }
     if no_group['users']:
         group_list.append(no_group)
+    params['group_list'] = group_list
 
-    return render_to_response('list.html', locals(), context_instance=RequestContext(request))
+    return render_to_response('list.html', params, context_instance=RequestContext(request))
 
 
 @login_required
@@ -52,17 +55,20 @@ def view_profile(request, name):
     user = User.objects.get(username=name)
     badge_list = Badge.objects.filter(creator=user) 
     if UserProfile.objects.filter(user=user):
+        params = {'request': request, 'user': user,}
         #User has already created a user profile.
         profile = UserProfile.objects.get(user=user)
+        params['profile'] = profile
+
         award_list = Award.objects.filter(user=user)
         if request.user == user or request.user.has_perm('labgeeks_people.change_userprofile'):
-            edit = True
+            params['edit'] = True
         if request.user == user or request.user.has_perm('labgeeks_people.view_wagehistory'):
-            can_view_wage_history = True
+            params['can_view_wage_history'] = True
         if request.user == user or request.user.has_perm('labgeeks_people.add_uwltreview'):
-            can_view_review = True
+            params['can_view_review'] = True
 
-        return render_to_response('profile.html', locals(), context_instance=RequestContext(request))
+        return render_to_response('profile.html', params, context_instance=RequestContext(request))
     else:
         #User HAS NOT created a user profile, allow them to create one.
         return create_user_profile(request, name)
@@ -95,8 +101,9 @@ def create_user_profile(request, name):
 
     if (not can_edit and profile) or (not can_add and not profile):
         # Don't allow editing or adding of other people's profiles unless permission assigned
-        return render_to_response('not_your_profile.html', locals(), context_instance=RequestContext(request))
+        return render_to_response('not_your_profile.html', {'request': request,}, context_instance=RequestContext(request))
 
+    params = {'request': request,}
     if request.method == 'POST':
         form = CreateUserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
@@ -107,6 +114,7 @@ def create_user_profile(request, name):
                     form.clean_image()
                 except:
                     validation_message = 'Image is too large (bigger than 1024*1024).  Try a smaller one!'
+                    params['validation_message'] = validation_message
                     gtg = False
             if gtg:
                 if profile:
@@ -125,11 +133,13 @@ def create_user_profile(request, name):
 
                 # Allow editing right after creating/editing a profile.
                 edit = True
+                params['edit'] = edit
                 # View the profile
-                return render_to_response('profile.html', locals(), context_instance=RequestContext(request))
+                params['profile'] = profile
+                return render_to_response('profile.html', params, context_instance=RequestContext(request))
     else:
         form = CreateUserProfileForm(instance=profile)
-
+        params['form'] = form
     # Differentiate between a super user creating a profile or a person creating their own profile.
     this_user = request.user
     if profile:
@@ -150,8 +160,10 @@ def create_user_profile(request, name):
             this_user = this_user.first_name
     except:
         this_user = user.first_name
-
-    return render_to_response('create_profile.html', locals(), context_instance=RequestContext(request))
+    
+    params['message'] = message
+    params['this_user'] = this_user
+    return render_to_response('create_profile.html', params, context_instance=RequestContext(request))
 
 
 @login_required
