@@ -39,7 +39,7 @@ $(document).ready(function() {
             <h1 id="user_name">
                 {{ profile.user.first_name }}
                 {% if profile.call_me_by %} "{{ profile.call_me_by }}"{% endif %}
-                {{ profile.user.last_name }} 
+               {% if perms.user_profile.view_last_names or request.user == user%}{{ profile.user.last_name }}{% endif %}
                 ({{ profile.user }})
             </h1>
             {% if edit %}<strong><a href="{% url People-Create_Profile profile.user %}">Edit profile</a></strong>{% endif %}

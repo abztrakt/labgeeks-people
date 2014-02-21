@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import date
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Permission
 from labgeeks_horae.models import TimePeriod as s_TimePeriod
 
 
@@ -163,6 +163,10 @@ class UWLTReview(PerformanceReview):
 class UserProfile(models.Model):
     """ Defines additional things we should know about users.
     """
+    class Meta:
+        permissions = (
+            ("view_last_names", "Can view last names"),
+        )
     user = models.ForeignKey(User, unique=True, related_name='uwnetid')
     staff_photo = models.ImageField(upload_to="images/%Y/%m/%d", null=True, blank=True)
     badge_photo = models.ImageField(upload_to="images/%Y/%m/%d", null=True, blank=True)

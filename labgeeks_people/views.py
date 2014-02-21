@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.core.context_processors import csrf
 from datetime import datetime
 from django.http import HttpResponseRedirect, HttpResponse
@@ -182,11 +182,14 @@ def view_wage_history(request, user):
     try:
         profile = UserProfile.objects.get(user=user)
         if profile.call_me_by:
-            user_name = profile.call_me_by + ' ' + user.last_name
+            user_name = profile.call_me_by
         else:
-            user_name = user.first_name + ' ' + user.last_name
+            user_name = user.first_name
     except:
-        user_name = user.first_name + ' ' + user.last_name
+        user_name = user.first_name
+
+    if(request.user.has_perm('labgeeks_people.view_last_names') or request.user == user):
+        user_name += user.last_name;
 
     for history in histories:
         wages.append(history.wage)
