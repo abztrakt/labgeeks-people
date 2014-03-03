@@ -2,7 +2,38 @@ from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
 from labgeeks_horae.models import TimePeriod as s_TimePeriod
+from forms_builder.forms.models import *
+from django.utils.translation import ugettext, ugettext_lazy as _
 
+class ReviewFormEntry(AbstractFormEntry):
+    reviewing = models.CharField(max_length=256)
+    form = models.ForeignKey("ReviewForm", related_name="entries")
+
+class ReviewFieldEntry(AbstractFieldEntry):
+    entry = models.ForeignKey("ReviewFormEntry", related_name="fields")
+
+class ReviewForm(AbstractForm):
+
+    class Meta:
+        abstract = False
+
+class ReviewField(AbstractField):
+
+    form = models.ForeignKey("ReviewForm", related_name="fields")
+    order = models.IntegerField(_("Order"), null=True, blank=True)
+
+    class Meta(AbstractField.Meta):
+        ordering = ("order",)
+
+    def save(self, *args, **kwargs):
+        if self.order is None:
+            self.order = self.form.fields.count()
+        super(ReviewField, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        fields_after = self.form.fields.filter(order__gte=self.order)
+        fields_after.update(order=models.F("order") - 1)
+        super(ReviewField, self).delete(*args, **kwargs)
 
 class EmploymentStatus(models.Model):
     """ Defines statuses that a Person could hold.
@@ -110,8 +141,8 @@ class PerformanceReview(models.Model):
     """
     user = models.ForeignKey(User, related_name='user_review')
     date = models.DateField()
-    comments = models.TextField(null=True, blank=True)
     reviewer = models.ForeignKey(User)
+    comments = models.TextField(null=True, blank=True)
     is_used_up = models.BooleanField()
     is_final = models.BooleanField()
 
@@ -122,7 +153,7 @@ class UWLTReview(PerformanceReview):
 
     class Meta:
         permissions = (
-            ("finalize_uwltreview", "Can finalize UWLT Review"),
+            ("finalize_review", "Can finalize UWLT Review"),
         )
         verbose_name = "UWLT review"
 
@@ -159,6 +190,42 @@ class UWLTReview(PerformanceReview):
     def get_fields(self):
         return  [(field.name, field.value_to_string(self)) for field in UWLTReview._meta.fields]
 
+"""class UWLRCReivew(PerformanceReview):
+    
+    class Meta:
+        permissions = (
+            ("finalize_review", "Can finalize reviews"),
+        )
+        verbose_name = "UWLRC review"
+
+    customer_service_communication = models.IntegerField(null=True, blank=True)
+    customer_service_getting_results = models.IntegerField(null=True, blank=True)
+    customer_service_innovating = models.IntegerField(null=True, blank=True)
+    customer_service_comments = models.TextField(null=True, blank=True)
+    collab_w_team_communication = models.IntegerField(null=True, blank=True)
+    collab_w_team_getting_results = models.IntegerField(null=True, blank=True)
+    collab_w_team_innovating = models.IntegerField(null=True, blank=True)
+    collab_w_team_comments = models.TextField(null=True, blank=True)
+    collab_across_teams_communication = models.IntegerField(null=True, blank=True)
+    collab_across_teams_getting_results = models.IntegerField(null=True, blank=True)
+    collab_across_teams_innovating = models.IntegerField(null=True, blank=True)
+    collab_across_teams_comments = models.TextField(null=True, blank=True)
+    technical_knowledge_communication = models.IntegerField(null=True, blank=True)
+    technical_knowledge_getting_results = models.IntegerField(null=True, blank=True)
+    technical_knowledge_innovating = models.IntegerField(null=True, blank=True)
+    technical_knowledge_comments = models.TextField(null=True, blank=True)
+    work_ethic_communication = models.IntegerField(null=True, blank=True)
+    work_ethic_getting_results = models.IntegerField(null=True, blank=True)
+    work_ethic_innovating = models.IntegerField(null=True, blank=True)
+    work_ethic_comments = models.TextField(null=True, blank=True)
+    missed_shifts = models.IntegerField(null=True, blank=True)
+    missed_shifts_comments = models.TextField(null=True, blank=True)
+    tardies = models.IntegerField(null=True, blank=True)
+    tardies_comments = models.TextField(null=True, blank=True)
+
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in UWLRCReview._meta.fields]
+"""
 
 class UserProfile(models.Model):
     """ Defines additional things we should know about users.
