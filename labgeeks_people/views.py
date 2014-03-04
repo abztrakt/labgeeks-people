@@ -19,12 +19,10 @@ def list_all(request):
     """
     params = {'request': request,}
     this_user = request.user
-    if this_user.has_perm('labgeeks_people.add_uwltreview'):
-        can_add_review = True
-    else:
-        can_add_review = False
-    params['can_add_review'] = can_add_review
-    
+    params['can_add_review'] = this_user.has_perm('labgeeks_people.add_uwltreview')
+
+    params['view_last_names'] = this_user.has_perm('labgeeks_people.view_last_names')
+
     #Separate out the list of users by their group association.
     groups = Group.objects.all()
     group_list = []
@@ -67,6 +65,19 @@ def view_profile(request, name):
             params['can_view_wage_history'] = True
         if request.user == user or request.user.has_perm('labgeeks_people.add_uwltreview'):
             params['can_view_review'] = True
+
+        try:
+            profile = UserProfile.objects.get(user=user)
+            if profile.call_me_by:
+                user_name = "%s \"%s\"" % (user.first_name,profile.call_me_by)
+            else:
+                user_name = user.first_name
+        except:
+            user_name = user.first_name
+
+        if(request.user.has_perm('labgeeks_people.view_last_names') or request.user == user):
+            user_name += " %s" % user.last_name
+        params['user_name'] = user_name
 
         return render_to_response('profile.html', params, context_instance=RequestContext(request))
     else:
@@ -201,7 +212,7 @@ def view_wage_history(request, user):
         user_name = user.first_name
 
     if(request.user.has_perm('labgeeks_people.view_last_names') or request.user == user):
-        user_name += user.last_name;
+        user_name += " %s" % user.last_name
 
     for history in histories:
         wages.append(history.wage)
