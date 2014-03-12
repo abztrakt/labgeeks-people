@@ -7,7 +7,6 @@ urlpatterns = patterns('labgeeks_people.views',
                        url(r'^(?P<user>\w+)/review/$', CreateReview.as_view()),
                        url(r'^(?P<user>\w+)/view_reviews/$', ViewReviews.as_view()),
                        url(r'^(?P<user>\w+)/review/submit/$', SubmitReview.as_view()),
-                       url(r'^(?P<user>\w+)/view_reviews/info/$', 'view_review_data', name="People-View_Review_Data"),
                        url(r'^(?P<user>\w+)/wage_history/$', 'view_wage_history', name="People-Wage_History"),
                        (r'^$', 'list_all'),
                        )
