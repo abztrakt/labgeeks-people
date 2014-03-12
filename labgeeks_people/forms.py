@@ -2,6 +2,14 @@ from django import forms
 from django.forms import ModelForm
 from labgeeks_people.models import *
 import os
+from forms_builder.forms.forms import FormForForm
+
+class SaveForm(FormForForm):
+    field_entry_model = ReviewFieldEntry
+
+    class Meta:
+        model = ReviewFormEntry
+        exclude = ("form", "entry_time")
 
 
 class CreateUserProfileForm(ModelForm):
