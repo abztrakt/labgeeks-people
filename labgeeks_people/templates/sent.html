@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class ="section">
+    <h1>You sucessfully submited a review for {{ reviewee }}</h1>
+</div>
+
+<hr class="seperator"/>
+
+<p><a href="/people/{{reviewee}}/view_reviews/"> View finalized reviews for {{reviewee}}</a></p>
+
+<p><a href="/people/">Return to People</a></p>
+{% endblock %}

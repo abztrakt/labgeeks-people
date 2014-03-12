@@ -1,0 +1,15 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>{{ form.title }}</h1>
+        {% if form.intro %}
+        <p>{{ form.intro }}</p>
+        {% endif %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ save_form.as_p }}
+            <input type="submit" value="{{ form.button_text }}">
+        </form>
+    </body>
+</html>
