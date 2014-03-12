@@ -1,8 +1,9 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404, render_to_response, render, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
 from datetime import datetime
 from django.http import HttpResponseRedirect, HttpResponse
 import json
@@ -11,7 +12,103 @@ from labgeeks_people.models import *
 from badger.models import Badge, Award
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import PermissionDenied
+from django.views.generic.base import View
+from django.views.generic.edit import FormView
+from forms_builder.forms.signals import *
+from forms_builder.forms.forms import FormForForm
+from django.dispatch import receiver
+from django.utils.decorators import method_decorator
 
+@receiver(form_valid)
+def set_reviewers(sender=None, form=None, entry=None, **kwargs):
+    request = sender
+    if request.user.is_authenticated():
+        field = entry.form.fields.get(label="Reviewer")
+        field_entry, _= entry.fields.get_or_create(field_id=field.id)
+        field_entry.value = request.user.username
+        field_entry.save()
+        field2 = entry.form.fields.get(label="Is Final")
+        field2_entry, _= entry.fields.get_or_create(field_id=field2.id)
+        if request.user.has_perm('labgeeks_people.finalize_review'):
+            field2_entry.value = True
+        else:
+            field2_entry.value = False
+        field2_entry.save()
+
+
+
+class ViewReviews(View):
+    """Display all submitted reviews of a user"""
+
+    @method_decorator(login_required)
+    def get(self, request, user):
+        forms = ReviewForm.objects.all()
+        review_entries = forms[0].entries.filter(reviewing=user)
+        if request.user.has_perm('labgeeks_people.finalize_review'):  # change to labgeeks_people.finalize_review for modularity
+            final_reviewer = True
+        else:
+            final_reviewer = False
+        params = {'form': forms[0], 'review_entries': review_entries, 'final_reviewer': final_reviewer, 'user': user}
+        return render(request, 'view_reviews.html', params)
+
+class ViewReviewDetail(View):
+    """Displays a single review of a user"""
+
+    def get(self, request, user):
+        forms = ReviewForm.objects.all()
+        review_entries = forms[0].entries.filter(reviewing=user)
+        field_entires = list()
+        for entry in review_entries:
+            field_entries.append(entry.fields)
+        form_fields = forms[0].fields
+        params = {'review_entries': review_entries, 'field_entries': field_entries, 'form_fields': form_fields, 'user': user}
+        return render(request, "viewreview.html", params)
+
+class SubmitReview(View):
+    
+    def get(self, request, user):
+        return render(request, "sent.html", {'reviewee': user})
+
+
+class CreateReview(View):
+    """Fill out a previously made review form for a user"""
+
+    def get(self, request, user):
+
+        staff_reviews = list()
+        if request.user.has_perm('labgeeks_people.finalize_review'):  # change to labgeeks_people.finalize_review for modularity
+            final_reviewer = True
+            staff_reviews = ReviewFormEntry.objects.filter(reviewing=user)
+        else:
+            final_reviewer = False
+        if request.user.has_perm('labgeeks_people.add_review'):
+            can_add_review = True
+        else:
+            can_add_review = False
+        usable_forms = list()
+        for form in ReviewForm.objects.all():
+            usable_forms.append(form)
+        params = {'user': user, 'final_reviewer': final_reviewer, 'can_add_review': can_add_review}
+        if not usable_forms:
+            params['form'] = "No forms created"
+        else:
+            params['review_entries'] = usable_forms[0].entries.filter(reviewing=user)
+            params['form'] = usable_forms[0]
+            params['staff_reviews'] = staff_reviews
+        return render(request, 'reviews.html', params)
+    
+    def post(self, request, user):
+        published = ReviewForm.objects.published()
+        form = get_object_or_404(published[0])
+        request_context = RequestContext(request)
+        form_vars = (form, request_context, request.POST or None, request.FILES or None)
+        save_form = SaveForm(*form_vars)
+        if not save_form.is_valid():
+            form_invalid.send(sender=request, form=save_form)
+        else:
+            form_entry = save_form.save()
+            form_valid.send(sender=request, form=save_form, entry=form_entry)
+        return redirect("submit/")
 
 @login_required
 def list_all(request):
@@ -225,7 +322,7 @@ def edit_reviews(request, user):
     if not can_add_review:
         raise PermissionDenied
 
-    if this_user.has_perm('labgeeks_people.finalize_uwltreview'):
+    if this_user.has_perm('labgeeks_people.finalize_review'):
         final_reviewer = True
     else:
         final_reviewer = False
@@ -402,7 +499,7 @@ def view_reviews(request, user):
     this_user = request.user
     user = User.objects.get(username=user)
 
-    if this_user.has_perm('labgeeks_people.finalize_uwltreview'):  # change to labgeeks_people.finalize_review for modularity
+    if this_user.has_perm('labgeeks_people.finalize_review'):  # change to labgeeks_people.finalize_review for modularity
         final_reviewer = True
     else:
         final_reviewer = False
@@ -474,7 +571,7 @@ def view_review_data(request, user):
         review = UWLTReview.objects.get(id=review_id)
     except:
         raise PermissionDenied
-    if this_user.has_perm('labgeeks_people.finalize_uwltreview') and this_user != user:
+    if this_user.has_perm('labgeeks_people.finalize_review') and this_user != user:
         can_finalize_review = True
     else:
         can_finalize_review = False
