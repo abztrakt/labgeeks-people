@@ -2,16 +2,69 @@ from labgeeks_people.models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django import forms
+from django.utils.translation import ungettext, ugettext_lazy as _
+from django.core.files.storage import FileSystemStorage
+from django.core.urlresolvers import reverse
+from django.db.models import Count
+from forms_builder.forms.forms import EntriesForm
+from forms_builder.forms.models import Form, Field, FormEntry, FieldEntry
+from forms_builder.forms.settings import CSV_DELIMITER, UPLOAD_ROOT
+from forms_builder.forms.settings import USE_SITES, EDITABLE_SLUGS
+from forms_builder.forms.utils import now, slugify
+from datetime import datetime
+from forms_builder.forms.admin import FormAdmin
+from django.conf.urls import patterns, url
+
+form_admin_filter_horizontal = ()
+form_admin_fieldsets = [
+    (None, {"fields": ("title", ("status", "login_required",),
+        ("publish_date", "expiry_date",),
+        "intro", "button_text", "response")}),
+]
+
+if EDITABLE_SLUGS:
+    form_admin_fieldsets.append(
+            (_("Slug"), {"fields": ("slug",), "classes": ("collapse",)}))
+
+if USE_SITES:
+    form_admin_fieldsets.append((_("Sites"), {"fields": ("sites",),
+        "classes": ("collapse",)}))
+    form_admin_filter_horizontal = ("sites",)
 
 
 class EmploymentStatusAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 admin.site.register(EmploymentStatus, EmploymentStatusAdmin)
+
+class ReviewFieldAdmin(admin.TabularInline):
+    model = ReviewField
+    exclude = ('slug', )
+
+class ReviewFormAdmin(admin.ModelAdmin):
+    formentry_model = ReviewFormEntry
+    fieldentry_model = ReviewFieldEntry
+
+    inlines = (ReviewFieldAdmin,)
+    list_display = ("title", "status", "publish_date",
+                    "expiry_date", "total_entries")
+    list_display_links = ("title",)
+    list_editable = ("status", "publish_date", "expiry_date")
+    list_filter = ("status",)
+    filter_horizontal = form_admin_filter_horizontal
+    search_fields = ("title", "intro", "response")
+    radio_fields = {"status": admin.HORIZONTAL}
+    fieldsets = form_admin_fieldsets
+
+    def queryset(self, request):
+        qs = super(ReviewFormAdmin, self).queryset(request)
+        return qs.annotate(total_entries=Count("entries"))
+
+admin.site.register(ReviewForm, ReviewFormAdmin)
 
 
 class WorkGroupAdmin(admin.ModelAdmin):
