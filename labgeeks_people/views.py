@@ -44,25 +44,12 @@ class ViewReviews(View):
     def get(self, request, user):
         forms = ReviewForm.objects.all()
         review_entries = forms[0].entries.filter(reviewing=user)
-        if request.user.has_perm('labgeeks_people.finalize_review'):  # change to labgeeks_people.finalize_review for modularity
+        if request.user.has_perm('labgeeks_people.finalize_review') or request.user == user:  # change to labgeeks_people.finalize_review for modularity
             final_reviewer = True
         else:
             final_reviewer = False
-        params = {'form': forms[0], 'review_entries': review_entries, 'final_reviewer': final_reviewer, 'user': user}
+        params = {'current_user': request.user, 'form': forms[0], 'review_entries': review_entries, 'final_reviewer': final_reviewer, 'user': user}
         return render(request, 'view_reviews.html', params)
-
-class ViewReviewDetail(View):
-    """Displays a single review of a user"""
-
-    def get(self, request, user):
-        forms = ReviewForm.objects.all()
-        review_entries = forms[0].entries.filter(reviewing=user)
-        field_entires = list()
-        for entry in review_entries:
-            field_entries.append(entry.fields)
-        form_fields = forms[0].fields
-        params = {'review_entries': review_entries, 'field_entries': field_entries, 'form_fields': form_fields, 'user': user}
-        return render(request, "viewreview.html", params)
 
 class SubmitReview(View):
     
@@ -75,24 +62,27 @@ class CreateReview(View):
 
     def get(self, request, user):
 
+        if request.user.username == user:
+            review_self = True
+        else:
+            review_self = False
         staff_reviews = list()
         if request.user.has_perm('labgeeks_people.finalize_review'):  # change to labgeeks_people.finalize_review for modularity
             final_reviewer = True
             staff_reviews = ReviewFormEntry.objects.filter(reviewing=user)
         else:
             final_reviewer = False
-        if request.user.has_perm('labgeeks_people.add_review'):
+        if request.user.has_perm('labgeeks_people.add_uwltreview') and not request.user == user:
             can_add_review = True
         else:
             can_add_review = False
         usable_forms = list()
         for form in ReviewForm.objects.all():
             usable_forms.append(form)
-        params = {'user': user, 'final_reviewer': final_reviewer, 'can_add_review': can_add_review}
+        params = {'user': user, 'final_reviewer': final_reviewer, 'can_add_review': can_add_review, 'review_self': review_self}
         if not usable_forms:
             params['form'] = "No forms created"
         else:
-            params['review_entries'] = usable_forms[0].entries.filter(reviewing=user)
             params['form'] = usable_forms[0]
             params['staff_reviews'] = staff_reviews
         return render(request, 'reviews.html', params)

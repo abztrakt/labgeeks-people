@@ -17,7 +17,7 @@
 
 <div id="reviews">
     {% for entry in review_entries %}
-        {% if final_reviewer %}
+        {% if final_reviewer or user == current_user %}
             <table class="head">
                 <tr>
                     <th> {{ entry.title }} </th>
