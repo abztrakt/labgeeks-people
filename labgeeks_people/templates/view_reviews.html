@@ -13,11 +13,8 @@
 {% if final_reviewer %}
 <p><a href="/people/{{ user }}/review/">Edit/Create a review for {{user}}</a></p>
 <hr class='separator' />
-{% endif %}
-
 <div id="reviews">
-    {% for entry in review_entries %}
-        {% if final_reviewer or user == current_user %}
+    {% for entry in final_reviews %}
             <table class="head">
                 <tr>
                     <th> {{ entry.title }} </th>
@@ -25,24 +22,20 @@
                 </tr>
             <table class="left">
             {% for field in form.fields.all %}
-                {% if not field.label == "Is Final" %}
                     <tr>
                         <td>{{ field.label }}</td>
                     </tr>
-                {% endif %}
             {% endfor %}
             </table>
             <table class="right">
             {% for field in entry.fields.all %}
-                {% if not field.value == "True" or field.value == "False" %}
                     <tr>
                         <td>{{ field.value }}</td>
                     </tr>
-                {% endif %}
             {% endfor %}
             </table>
             </table>
-        {% endif %}
     {% endfor %}
+{% endif %}
 </div>
 {% endblock %}

@@ -20,7 +20,7 @@ from django.dispatch import receiver
 from django.utils.decorators import method_decorator
 
 @receiver(form_valid)
-def set_reviewers(sender=None, form=None, entry=None, **kwargs):
+def set_data(sender=None, form=None, entry=None, **kwargs):
     request = sender
     if request.user.is_authenticated():
         field = entry.form.fields.get(label="Reviewer")
@@ -43,18 +43,32 @@ class ViewReviews(View):
     @method_decorator(login_required)
     def get(self, request, user):
         forms = ReviewForm.objects.all()
-        review_entries = forms[0].entries.filter(reviewing=user)
+        reviews = forms[0].entries.filter(reviewing=user)
+        final_reviews = list()
+        for review in reviews:
+            final_check = False
+            fields = review.fields.all()
+            for field in fields:
+                if field.value == "True":
+                    final_check = True
+            if final_check:
+                final_reviews.append(review)
+
         if request.user.has_perm('labgeeks_people.finalize_review') or request.user == user:  # change to labgeeks_people.finalize_review for modularity
             final_reviewer = True
         else:
             final_reviewer = False
-        params = {'current_user': request.user, 'form': forms[0], 'review_entries': review_entries, 'final_reviewer': final_reviewer, 'user': user}
+        params = {'current_user': request.user, 'form': forms[0], 'final_reviews': final_reviews, 'final_reviewer': final_reviewer, 'user': user}
         return render(request, 'view_reviews.html', params)
 
 class SubmitReview(View):
-    
+        
     def get(self, request, user):
-        return render(request, "sent.html", {'reviewee': user})
+        if request.user.has_perm('labgeeks_people.finalize_review') or request.user == user:  # change to     labgeeks_people.finalize_review for modularity
+            final_reviewer = True
+        else:
+            final_reviewer = False
+        return render(request, "sent.html", {'reviewee': user, 'final_reviwer': final_reviewer})
 
 
 class CreateReview(View):
@@ -69,7 +83,15 @@ class CreateReview(View):
         staff_reviews = list()
         if request.user.has_perm('labgeeks_people.finalize_review'):  # change to labgeeks_people.finalize_review for modularity
             final_reviewer = True
-            staff_reviews = ReviewFormEntry.objects.filter(reviewing=user)
+            reviews = ReviewFormEntry.objects.filter(reviewing=user)
+            for review in reviews:
+                final_check = False
+                fields = review.fields.all()
+                for field in fields:
+                    if field.value == "True":
+                        final_check = True
+                if final_check == False:
+                    staff_reviews.append(review)
         else:
             final_reviewer = False
         if request.user.has_perm('labgeeks_people.add_uwltreview') and not request.user == user:

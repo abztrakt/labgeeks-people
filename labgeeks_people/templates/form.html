@@ -8,7 +8,13 @@
         {% endif %}
         <form action="" method="post">
             {% csrf_token %}
-            {{ save_form.as_p }}
+            {% for field in save_form %}
+                <div class="fieldWrapper">
+                    {% if not field.name == "is_final" %}
+                        {{ field.label_tag }} {{ field }}
+                    {% endif %}
+                </div>
+            {% endfor %}
             <input type="submit" value="{{ form.button_text }}">
         </form>
     </body>

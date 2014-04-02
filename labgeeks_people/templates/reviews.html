@@ -17,7 +17,6 @@
     </select>
 </div>
 
-
 {% if final_reviewer %}
     <p><a href="/people/{{user}}/view_reviews/">View finalized reviews for {{user}}</a></p>
     <hr class='separator' />
@@ -26,34 +25,34 @@
             {% if not review_self %}
                 <h1>Non-Final Reviews</h1>
                 {% for entry in staff_reviews %}
-                    <table class="head">
-                        <tr>
-                            <th> {{ entry.title }} </th>
-                            <th> {{ entry.entry_time }} </th>
-                        </tr>
-                    <table class="left">
-                    {% for field in form.fields.all %}
-                        {% if not field.label == "Is Final" or field.label == "Reviewing" %}
+                        <table class="head">
                             <tr>
-                                <td>{{ field.label }}</td>
+                                <th> {{ entry.title }} </th>
+                                <th> {{ entry.entry_time }} </th>
                             </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </table>
-                    <table class="right">
-                    {% for field in entry.fields.all %}
-                        {% if not field.value == "True" or field.value == "False" or field.value == user %}
-                            <tr>
-                                <td>{{ field.value }}</td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </table>
-                    </table>
+                        <table class="left">
+                        {% for field in form.fields.all %}
+                            {% if not field.label == "Is Final" %}
+                                <tr>
+                                    <td>{{ field.label }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </table>
+                        <table class="right">
+                        {% for field in entry.fields.all %}
+                            {% if not field.value == "True" and not field.value == "False" %}
+                                <tr>
+                                    <td>{{ field.value }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </table>
+                        </table>
                 {% endfor %}
             {% endif %}
         {% else %}
-            <p>No submitted reviews for {{ user }}</p>
+            <p>No non-final submitted reviews for {{ user }}</p>
         {% endif %}
     </div>
 

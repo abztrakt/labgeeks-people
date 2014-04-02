@@ -7,7 +7,9 @@
 
 <hr class="seperator"/>
 
+{% if final_reviewer %}
 <p><a href="/people/{{reviewee}}/view_reviews/"> View finalized reviews for {{reviewee}}</a></p>
+{% endif %}
 
 <p><a href="/people/">Return to People</a></p>
 {% endblock %}
