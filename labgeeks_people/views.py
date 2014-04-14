@@ -26,29 +26,12 @@ class ViewReviews(View):
     def get(self, request, user):
         forms = ReviewForm.objects.all()
         official_reviews = forms[0].entries.filter(reviewing=user, final=True, official=True)
-        print official_reviews
         if request.user.has_perm('labgeeks_people.finalize_review') or request.user == user:
             final_reviewer = True
         else:
             final_reviewer = False
         params = {'current_user': request.user, 'form': forms[0], 'official_reviews': official_reviews, 'final_reviewer': final_reviewer, 'user': user}
         return render(request, 'view_reviews.html', params)
-
-        """def post(self, request, user):
-            published = ReviewForm.objects.published()
-            form = get_object_or_404(published[0])
-            request_context = RequestContext(request)
-            form_vars = (form, request_context, request.POST or None, request.FILES or None)
-            save_form = SaveForm(*form_vars)
-            # check for save or sumbit, if save then save(commit=False), store model instance for later use
-            # then add checks for if a review was started
-            if not save_form.is_valid():
-                form_invalid.send(sender=request, form=save_form)
-            else:
-                form_entry = save_form.save()
-                form_valid.send(sender=request, form=save_form, entry=form_entry)
-            return redirect("submit/")"""
-
 
 class SubmitReview(View):
     def get(self, request, user):
@@ -79,7 +62,6 @@ class CreateReview(View):
         else:
             can_add_review = False
         params = {'user': user, 'final_reviewer': final_reviewer, 'can_add_review': can_add_review, 'review_self': review_self}
-        #check for unfinished reviews, if so build form with unfinished data inserted
         if incomplete_reviews:
             request_context = RequestContext(request)
             incomplete_review = incomplete_reviews[0]
