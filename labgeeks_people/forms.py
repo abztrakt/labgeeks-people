@@ -2,15 +2,16 @@ from django import forms
 from django.forms import ModelForm
 from labgeeks_people.models import *
 import os
-from forms_builder.forms.forms import FormForForm
+from forms_builder.forms.forms import *
+from django.template import Template
+from labgeeks_people.signals import set_official
 
 class SaveForm(FormForForm):
     field_entry_model = ReviewFieldEntry
 
     class Meta:
         model = ReviewFormEntry
-        exclude = ("form", "entry_time")
-
+        exclude = ("form", "entry_time", "official")
 
 class CreateUserProfileForm(ModelForm):
     def save(self, *args, **kwargs):
@@ -27,7 +28,7 @@ class CreateUserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ('staff_photo', 'call_me_by', 'working_periods', 'grad_date', 'office', 'about_me', 'phone', 'alt_phone')
-  
+
 
 class CreatePerformanceReviewForm(ModelForm):
     def save(self, *args, **kwargs):

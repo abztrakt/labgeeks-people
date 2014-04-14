@@ -10,12 +10,10 @@
             {% csrf_token %}
             {% for field in save_form %}
                 <div class="fieldWrapper">
-                    {% if not field.name == "is_final" %}
-                        {{ field.label_tag }} {{ field }}
-                    {% endif %}
+                    {{ field.label_tag }} {{ field }}
                 </div>
             {% endfor %}
-            <input type="submit" value="{{ form.button_text }}">
+            <input type="submit" name="submit" value="{{ form.button_text }}">
         </form>
     </body>
 </html>

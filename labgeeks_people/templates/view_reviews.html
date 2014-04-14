@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load build_reviewforms_tags %}
 
 {% block pageJS %}
 <script type="text/javascript" src="/static/js/review.js"></script>
@@ -7,35 +8,41 @@
 {% block content %}
 
 <div class='section'>
-    <h1>Reviews for {{ user }}</h1>
+    <h1>Official Reviews for {{ user }}</h1>
 </div>
 <hr class='separator' />
 {% if final_reviewer %}
 <p><a href="/people/{{ user }}/review/">Edit/Create a review for {{user}}</a></p>
 <hr class='separator' />
 <div id="reviews">
-    {% for entry in final_reviews %}
-            <table class="head">
-                <tr>
-                    <th> {{ entry.title }} </th>
-                    <th> {{ entry.entry_time }} </th>
-                </tr>
+    {% for entry in official_reviews %}
+        <table class="head">
+            <tr>
+                <th> {{ entry.title }} </th>
+                <th> {{ entry.entry_time }} </th>
+            </tr>
             <table class="left">
             {% for field in form.fields.all %}
+                {% if not field.label == "Reviewing" %}
                     <tr>
                         <td>{{ field.label }}</td>
                     </tr>
+                {% endif %}
             {% endfor %}
             </table>
             <table class="right">
             {% for field in entry.fields.all %}
+                {% if not field.value == user %}
                     <tr>
                         <td>{{ field.value }}</td>
                     </tr>
+                {% endif %}
             {% endfor %}
             </table>
-            </table>
+        </table>
     {% endfor %}
 {% endif %}
+
+
 </div>
 {% endblock %}

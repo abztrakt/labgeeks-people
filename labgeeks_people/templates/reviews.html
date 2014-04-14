@@ -7,23 +7,21 @@
 
 {% block content %}
 <div class="section">
-    <h1>Reviews for {{user}}</h1>
+    <h1>Reviews for {{ user }}</h1>
 </div>
-
 <hr class="separator"/>
 <div id="select">
     <select>
             <option value="{{ form.id }}">{{ form.title }}</option>
     </select>
 </div>
-
 {% if final_reviewer %}
-    <p><a href="/people/{{user}}/view_reviews/">View finalized reviews for {{user}}</a></p>
+    <p><a href="/people/{{ user }}/view_reviews/">View finalized reviews for {{ user }}</a></p>
     <hr class='separator' />
     <div id="reviews">
         {% if staff_reviews %}
             {% if not review_self %}
-                <h1>Non-Final Reviews</h1>
+                <h2>Unofficial Reviews</h2>
                 {% for entry in staff_reviews %}
                         <table class="head">
                             <tr>
@@ -32,7 +30,7 @@
                             </tr>
                         <table class="left">
                         {% for field in form.fields.all %}
-                            {% if not field.label == "Is Final" %}
+                            {% if not field.label == "Reviewing" %}
                                 <tr>
                                     <td>{{ field.label }}</td>
                                 </tr>
@@ -41,7 +39,7 @@
                         </table>
                         <table class="right">
                         {% for field in entry.fields.all %}
-                            {% if not field.value == "True" and not field.value == "False" %}
+                            {% if not field.value == user %}
                                 <tr>
                                     <td>{{ field.value }}</td>
                                 </tr>
@@ -52,17 +50,26 @@
                 {% endfor %}
             {% endif %}
         {% else %}
-            <p>No non-final submitted reviews for {{ user }}</p>
+            <p>No unofficial submitted reviews for {{ user }}</p>
         {% endif %}
     </div>
 
 {% endif %}
-
 {% if can_add_review %}
+    <h2>Review</h2>
     {% if not review_self %}
-        {% build_reviewform form %}
+        {% if save_form %}
+            <p>You have an unfinalized review of {{ user }}. Please finish this review and finalize it by checking the final box before submitting</p>
+            <form action'' method='post'>
+                {% csrf_token %}
+                {{ save_form }}
+                </br>
+                <input type='submit' name='submit' value='submit'>
+            </form>
+        {% else %}
+            {% build_reviewform form %}
+        {% endif %}
     {% else %}
-        <h1>Review Form</h1>
         <p>You can not review yourself</p>
     {% endif %}
 {% endif %}

@@ -8,6 +8,9 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 class ReviewFormEntry(AbstractFormEntry):
     reviewing = models.CharField(max_length=256)
     form = models.ForeignKey("ReviewForm", related_name="entries")
+    official = models.BooleanField()
+    reviewer = models.CharField(max_length=256)
+    final = models.BooleanField()
 
 class ReviewFieldEntry(AbstractFieldEntry):
     entry = models.ForeignKey("ReviewFormEntry", related_name="fields")

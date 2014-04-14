@@ -49,5 +49,5 @@ def build_reviewform(parser, token):
             raise ValueError
     except ValueError:
         e = ()
-        raise template.TemplateSyntaxError(render_built_form.__doc__)
+        raise template.TemplateSyntaxError(build_reviewform.__doc__)
     return BuiltFormNode(name, value)
