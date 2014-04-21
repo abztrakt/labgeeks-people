@@ -26,11 +26,20 @@ class ViewReviews(View):
     def get(self, request, user):
         forms = ReviewForm.objects.all()
         official_reviews = forms[0].entries.filter(reviewing=user, final=True, official=True)
+        i = 0;
+        column1 = []
+        column2 = []
+        for review in official_reviews:
+            if i % 2 == 0:
+                column1.append(review)
+            else:
+                column2.append(review)
+            i = i + 1
         if request.user.has_perm('labgeeks_people.finalize_review') or request.user == user:
             final_reviewer = True
         else:
             final_reviewer = False
-        params = {'current_user': request.user, 'form': forms[0], 'official_reviews': official_reviews, 'final_reviewer': final_reviewer, 'user': user}
+        params = {'current_user': request.user, 'form': forms[0], 'column1': column1, 'column2': column2, 'final_reviewer': final_reviewer, 'user': user}
         return render(request, 'view_reviews.html', params)
 
 class SubmitReview(View):
@@ -66,17 +75,23 @@ class CreateReview(View):
             request_context = RequestContext(request)
             incomplete_review = incomplete_reviews[0]
             form_vars = (form, request_context, request.POST or None, request.FILES or None)
-            kwargs = {'instance': incomplete_reviewi, 'user': user}
+            kwargs = {'instance': incomplete_review}
             save_form = SaveForm(*form_vars, **kwargs)
             params['save_form'] = save_form
             incomplete_review.delete()
         if final_reviewer:
-            staff_reviews = []
             reviews = ReviewFormEntry.objects.filter(reviewing=user, final=True, official=False)
+            i = 0;
+            column1 = []
+            column2 = []
             for review in reviews:
-                if not review.official:
-                    staff_reviews.append(review)
-            params['staff_reviews'] = staff_reviews
+                if i % 2 == 0:
+                    column1.append(review)
+                else:
+                    column2.append(review)
+                i = i + 1
+            params['column1'] = column1
+            params['column2'] = column2
         if not form:
             params['form'] = "No forms created"
         else:

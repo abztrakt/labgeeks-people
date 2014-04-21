@@ -20,37 +20,69 @@
     <hr class='separator' />
 </div>
     <div id="reviews">
-        {% if staff_reviews %}
+        {% if column1 %}
             {% if not review_self %}
                 <h2>Unofficial Reviews</h2>
-                {% for entry in staff_reviews %}
-                    <div class="review">
-                        <table class="head review_score_table">
-                            <tr>
-                                <th> {{ entry.title }} </th>
-                                <th> {{ entry.entry_time }} </th>
-                            </tr>
-                        <table class="left review_score_table">
-                        {% for field in form.fields.all %}
-                            {% if not field.label == "Reviewing" %}
+                <div id="column1">
+                    {% for entry in column1 %}
+                        <div class="review">
+                            <table class="head review_score_table">
                                 <tr>
-                                    <td class="field">{{ field.label }}</td>
+                                    <th> {{ entry.title }} </th>
+                                    <th> {{ entry.entry_time }} </th>
                                 </tr>
-                            {% endif %}
-                        {% endfor %}
-                        </table>
-                        <table class="right review_score_table">
-                        {% for field in entry.fields.all %}
-                            {% if not field.value == user %}
+                            <table class="left review_score_table">
+                                {% for field in form.fields.all %}
+                                    {% if not field.label == "Reviewing" %}
+                                        <tr>
+                                            <td class="field">{{ field.label }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                            <table class="right review_score_table">
+                                {% for field in entry.fields.all %}
+                                    {% if not field.value == user %}
+                                        <tr>
+                                            <td class="field">{{ field.value }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="column2">
+                    {% for entry in column2 %}
+                        <div class="review">
+                            <table class="head review_score_table">
                                 <tr>
-                                    <td class="field">{{ field.value }}</td>
+                                    <th> {{ entry.title }} </th>
+                                    <th> {{ entry.entry_time }} </th>
                                 </tr>
-                            {% endif %}
-                        {% endfor %}
-                        </table>
-                        </table>
-                    </div>
-                {% endfor %}
+                            <table class="left review_score_table">
+                                {% for field in form.fields.all %}
+                                    {% if not field.label == "Reviewing" %}
+                                        <tr>
+                                            <td class="field">{{ field.label }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                            <table class="right review_score_table">
+                                {% for field in entry.fields.all %}
+                                    {% if not field.value == user %}
+                                        <tr>
+                                            <td class="field">{{ field.value }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         {% else %}
             <p>No unofficial submitted reviews for {{ user }}</p>
