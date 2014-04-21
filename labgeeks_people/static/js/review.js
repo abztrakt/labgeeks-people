@@ -20,7 +20,29 @@ $(document).ready(function() {
             $("#is_final_message").removeClass("visible").addClass("hidden");
         }
     });
+    alignTableRowHeights();
 });
+
+function alignTableRowHeights() {
+    $('.review').each(function(k) {
+        var heights = [];
+        $(this).find('.right').find('tr').each(function(i) {
+            heights[i] = $(this).height();
+        });
+
+        var tableOneRows = $(this).find('.left').find('tr');
+
+        var tempDiv = $('<div />');
+        var table1 = $(this).find('.left');
+        table1.replaceWith(tempDiv);
+
+        $.each(tableOneRows, function(i) {
+            $(this).height(heights[i]);
+        });
+
+        tempDiv.replaceWith(table1);
+    });
+}
 
 /*
 Performs an Ajax call to grab the data. 
