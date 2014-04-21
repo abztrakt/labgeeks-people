@@ -6,47 +6,50 @@
 {% endblock %}
 
 {% block content %}
+<div class="content_wrap">
 <div class="section">
     <h1>Reviews for {{ user }}</h1>
-</div>
-<hr class="separator"/>
-<div id="select">
-    <select>
-            <option value="{{ form.id }}">{{ form.title }}</option>
-    </select>
-</div>
-{% if final_reviewer %}
+    <hr class="separator"/>
+    <div id="select">
+        <select>
+                <option value="{{ form.id }}">{{ form.title }}</option>
+        </select>
+    </div>
+    {% if final_reviewer %}
     <p><a href="/people/{{ user }}/view_reviews/">View finalized reviews for {{ user }}</a></p>
     <hr class='separator' />
+</div>
     <div id="reviews">
         {% if staff_reviews %}
             {% if not review_self %}
                 <h2>Unofficial Reviews</h2>
                 {% for entry in staff_reviews %}
-                        <table class="head">
+                    <div class="review">
+                        <table class="head review_score_table">
                             <tr>
                                 <th> {{ entry.title }} </th>
                                 <th> {{ entry.entry_time }} </th>
                             </tr>
-                        <table class="left">
+                        <table class="left review_score_table">
                         {% for field in form.fields.all %}
                             {% if not field.label == "Reviewing" %}
                                 <tr>
-                                    <td>{{ field.label }}</td>
+                                    <td class="field">{{ field.label }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
                         </table>
-                        <table class="right">
+                        <table class="right review_score_table">
                         {% for field in entry.fields.all %}
                             {% if not field.value == user %}
                                 <tr>
-                                    <td>{{ field.value }}</td>
+                                    <td class="field">{{ field.value }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
                         </table>
                         </table>
+                    </div>
                 {% endfor %}
             {% endif %}
         {% else %}
@@ -54,7 +57,9 @@
         {% endif %}
     </div>
 
-{% endif %}
+    {% endif %}
+
+<div id="review_form">
 {% if can_add_review %}
     <h2>Review</h2>
     {% if not review_self %}
@@ -73,6 +78,6 @@
         <p>You can not review yourself</p>
     {% endif %}
 {% endif %}
-
-
+</div>
+</div>
 {% endblock %}
