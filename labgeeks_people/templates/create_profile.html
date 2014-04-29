@@ -8,6 +8,19 @@
 </script>
 {% endblock %}
 
+{% block pageCSS %}
+    <style>
+        #staff_photo-clear_id {
+            margin-top: 10px;
+            display: block;
+        }
+
+        #staff_photo-clear_id + label:after{
+            content: " *(Please Don't Try to Clear and Select a new Image at the same time)";
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 <div class="section">
     <h1>Editing profile for {{this_user}}.</h1>
