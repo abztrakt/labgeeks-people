@@ -25,7 +25,7 @@ class ViewReviews(View):
     @method_decorator(login_required)
     def get(self, request, user):
         forms = ReviewForm.objects.all()
-        official_reviews = forms[0].entries.filter(reviewing=user, final=True, official=True)
+        official_reviews = forms[0].entries.filter(reviewing=user, complete=True, official=True)
         i = 0;
         column1 = []
         column2 = []
@@ -61,7 +61,7 @@ class CreateReview(View):
             final_reviewer = False
         forms = ReviewForm.objects.published()
         form = get_object_or_404(forms[0])
-        incomplete_reviews = ReviewFormEntry.objects.filter(reviewing=user, final=False, reviewer=request.user)
+        incomplete_reviews = ReviewFormEntry.objects.filter(reviewing=user, complete=False, reviewer=request.user)
         if request.user.username == user:
             review_self = True
         else:
@@ -80,7 +80,7 @@ class CreateReview(View):
             params['save_form'] = save_form
             incomplete_review.delete()
         if final_reviewer:
-            reviews = ReviewFormEntry.objects.filter(reviewing=user, final=True, official=False)
+            reviews = ReviewFormEntry.objects.filter(reviewing=user, complete=True, official=False)
             i = 0;
             column1 = []
             column2 = []

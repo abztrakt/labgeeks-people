@@ -10,7 +10,7 @@ class ReviewFormEntry(AbstractFormEntry):
     form = models.ForeignKey("ReviewForm", related_name="entries")
     official = models.BooleanField()
     reviewer = models.CharField(max_length=256)
-    final = models.BooleanField()
+    complete = models.BooleanField()
 
 class ReviewFieldEntry(AbstractFieldEntry):
     entry = models.ForeignKey("ReviewFormEntry", related_name="fields")
