@@ -3,6 +3,7 @@
 
 {% block pageJS %}
 <script type="text/javascript" src="/static/js/review.js"></script>
+<link rel="stylesheet" href="static/css/review.less">
 {% endblock %}
 
 {% block content %}
@@ -15,10 +16,12 @@
                 <option value="{{ form.id }}">{{ form.title }}</option>
         </select>
     </div>
-    {% if final_reviewer %}
+    {% if final_reviewer or current_user == user %}
     <p><a href="/people/{{ user }}/view_reviews/">View finalized reviews for {{ user }}</a></p>
     <hr class='separator' />
 </div>
+    {% endif %}
+    {% if final_reviwer %}
     <div id="reviews">
         {% if column1 %}
             {% if not review_self %}
@@ -101,7 +104,7 @@
                 {% csrf_token %}
                 {{ save_form }}
                 </br>
-                <input type='submit' name='submit' value='submit'>
+                <input id='submit' type='submit' name='submit' value='submit'>
             </form>
         {% else %}
             {% build_reviewform form %}

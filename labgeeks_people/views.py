@@ -39,7 +39,7 @@ class ViewReviews(View):
             final_reviewer = True
         else:
             final_reviewer = False
-        params = {'current_user': request.user, 'form': forms[0], 'column1': column1, 'column2': column2, 'final_reviewer': final_reviewer, 'user': user}
+        params = {'current_user': request.user.username, 'form': forms[0], 'column1': column1, 'column2': column2, 'final_reviewer': final_reviewer, 'user': user}
         return render(request, 'view_reviews.html', params)
 
 class SubmitReview(View):
@@ -59,7 +59,7 @@ class CreateReview(View):
             final_reviewer = True
         else:
             final_reviewer = False
-        forms = ReviewForm.objects.published()
+        forms = ReviewForm.objects.filter(status=STATUS_PUBLISHED)
         form = get_object_or_404(forms[0])
         incomplete_reviews = ReviewFormEntry.objects.filter(reviewing=user, complete=False, reviewer=request.user)
         if request.user.username == user:
@@ -70,7 +70,7 @@ class CreateReview(View):
             can_add_review = True
         else:
             can_add_review = False
-        params = {'user': user, 'final_reviewer': final_reviewer, 'can_add_review': can_add_review, 'review_self': review_self}
+        params = {'current_user': request.user.username, 'user': user, 'final_reviewer': final_reviewer, 'can_add_review': can_add_review, 'review_self': review_self}
         if incomplete_reviews:
             request_context = RequestContext(request)
             incomplete_review = incomplete_reviews[0]
@@ -99,7 +99,7 @@ class CreateReview(View):
         return render(request, 'reviews.html', params)
 
     def post(self, request, user):
-        published = ReviewForm.objects.published()
+        published = ReviewForm.objects.filter(status=STATUS_PUBLISHED)
         form = get_object_or_404(published[0])
         request_context = RequestContext(request)
         form_vars = (form, request_context, request.POST or None, request.FILES or None)

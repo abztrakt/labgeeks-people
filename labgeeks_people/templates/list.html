@@ -36,7 +36,7 @@ $(document).ready(function()
                     <th><a href='#'>Title</a></th>
                     <th></th>
                     <th></th>
-                    {% if can_add_review %}<th></th>{% endif %}
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +49,7 @@ $(document).ready(function()
                     <td><a href="{% url People-View_Profile user %}"><i class="icon-user"></i><span class="long">Profile</span></a></td>
                     <td><a href="{% url Personal-Timesheet user %}"><i class="icon-list-alt"></i><span class="long">Timesheet</span></a></td>
                     {% if can_add_review%}<td><a href="{{ user }}/review/"><i class="icon-pencil"></i><span class="long">Create/Edit Review</span></a></td>{% endif %}
+                    {% if this_user == user %}<td><a href="{{ user }}/view_reviews/"><i class="icon-pencil"></i><span class="long">View Reviews</span></a></td>{% endif %}
                 </tr>
             {% endfor %}
             </tbody>

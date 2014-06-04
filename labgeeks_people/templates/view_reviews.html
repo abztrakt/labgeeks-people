@@ -10,7 +10,7 @@
     <div class='section'>
         <h1>Official Reviews for {{ user }}</h1>
         <hr class='separator' />
-        {% if final_reviewer %}
+        {% if final_reviewer or current_user == user %}
             <p><a href="/people/{{ user }}/review/">Edit/Create a review for {{user}}</a></p>
             <hr class='separator' />
     </div>
