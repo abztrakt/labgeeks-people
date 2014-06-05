@@ -1,26 +1,7 @@
-.review_score_table {
-    td {
-        padding: 5px;
-    }
-    tbody {
-        td:first-child {
-            font-weight: bold;
-            padding-right: 10px;
-        }
-    }
-    thead {
-       padding-bottom: 10px;
-       display: block;
-       border: 0;
-    }
-
-    border-collapse: collapse;
-}
-
 .field {
     font-size: 11pt;
     margin: 10px;
-    width: 70%;
+    width: 90%;
     .tooltips {
         font-style: italic;
         .info;
@@ -42,34 +23,78 @@ li {
 
 .left {
     float: left;
+    width: 30%;
+}
+.right{
+    width: 70%;
+}
+.thead{
+    width: 100%;
 }
 
-#column1 {
-    float: left;
-    width: 46%;
-    overflow: hidden;
-}
 
-#column2 {
-    float: left;
-    width: 46%;
-    overflow: hidden;
-}
-
-#reviews {
-    width: 90%;
-    margin: auto, 3em;
+#reviews, .section {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
     overflow: hidden;
     .review{
-        margin: 0.5em;
-        padding: 0.5em;
         border-bottom-style: solid;
         border-bottom-color: black;
         border-bottom-width: 0.1em;
+        td {
+            padding: 5px;
+        }
+        th {
+            font-weight: bold;
+            padding-bottom: 10px;
+            display: block;
+            border: 0;
+        }
+        border-collapse: collapse;
+        .left{
+            font-weight: bold;
+        }
     }
 }
 
 #review_form {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3em;
+}
+
+form{
     width: 90%;
-    margin: auto, 3em;
+    margin: auto, 1em;
+}
+
+.fieldWrapper {
+    overflow: hidden;
+    padding-bottom: 0.5em;
+    label {
+        margin-top: 0.5em;
+        margin-right: 1em;
+        width: 15%;
+        float: left;
+    }
+    input {
+        width: auto;
+    }
+    ul {
+        overflow: hidden;
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        label{
+            float: left;
+            margin: 0px;
+            margin-right: 0.5em;
+            width: auto;
+        }
+        li {
+            width: auto;
+        }
+    }
 }

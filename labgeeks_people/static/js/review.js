@@ -13,6 +13,16 @@ $(document).ready(function() {
         getReviewData(this.id);
     });
 
+    $('[name="submit"]').val("Save");
+
+    $("#id_complete").change(function(){
+        if ($(this).is(':checked')){
+            $('[name="submit"]').val("Submit");
+        }else{
+            $('[name="submit"]').val("Save");
+        }
+    });
+
     $("#id_is_final").change(function() {
         if ($(this).is(':checked')){
             $("#is_final_message").removeClass("hidden").addClass("visible");
