@@ -4,7 +4,6 @@ from labgeeks_people.models import *
 import os
 from forms_builder.forms.forms import *
 from django.template import Template
-from labgeeks_people.signals import set_official
 
 class SaveForm(FormForForm):
     field_entry_model = ReviewFieldEntry
