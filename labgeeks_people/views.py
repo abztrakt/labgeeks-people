@@ -124,6 +124,11 @@ def list_all(request):
     else:
         can_add_review = False
 
+    if this_user.has_perm('labgeeks_people.finalize_review'):
+        final_reviewer = True
+    else:
+        final_reviewer = False
+
     #Separate out the list of users by their group association.
     groups = Group.objects.all()
     group_list = []
