@@ -12,5 +12,6 @@ setup(
         'setuptools',
         'pillow',
         'South==0.7.3',
+        'django-forms-builder==0.9',
     ],
 )
