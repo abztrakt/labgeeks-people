@@ -23,11 +23,10 @@
     {% endif %}
     {% if final_reviewer %}
     <div id="reviews">
-        {% if column1 %}
+        {% if entries %}
             {% if not review_self %}
                 <h2>Unofficial Reviews</h2>
-                <div id="column1">
-                    {% for entry in column1 %}
+                    {% for entry in entries %}
                         <div class="review">
                             <table class="head review_score_table">
                                 <tr>
@@ -35,37 +34,7 @@
                                     <th> {{ entry.entry_time }} </th>
                                 </tr>
                             <table class="left review_score_table">
-                                {% for field in form.fields.all %}
-                                    {% if not field.label == "Reviewing" %}
-                                        <tr>
-                                            <td class="field">{{ field.label }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            </table>
-                            <table class="right review_score_table">
-                                {% for field in entry.fields.all %}
-                                    {% if not field.value == user %}
-                                        <tr>
-                                            <td class="field">{{ field.value }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            </table>
-                            </table>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div id="column2">
-                    {% for entry in column2 %}
-                        <div class="review">
-                            <table class="head review_score_table">
-                                <tr>
-                                    <th> {{ entry.title }} </th>
-                                    <th> {{ entry.entry_time }} </th>
-                                </tr>
-                            <table class="left review_score_table">
-                                {% for field in form.fields.all %}
+                                {% for field in entry.form.fields.all %}
                                     {% if not field.label == "Reviewing" %}
                                         <tr>
                                             <td class="field">{{ field.label }}</td>
