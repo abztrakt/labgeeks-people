@@ -52,7 +52,7 @@ admin.site.register(UWLTReview, UWLTReviewAdmin)
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'status', 'start_date', 'grad_date', 'supervisor', 'title', 'office',)
-    search_fields = ('user', 'title', 'office', 'phone', 'alt_phone',)
+    search_fields = ['user__username', 'title__name', 'office', 'phone', 'alt_phone']
     list_filter = ('status', 'start_date', 'grad_date', 'title', 'office',)
     actions = ['change_title', 'change_supervisor']
 
