@@ -38,6 +38,7 @@ $(document).ready(function()
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +48,15 @@ $(document).ready(function()
                     <td>{{ user.last_name }}</td>
                     <td>{{ user }}</td>
                     <td>{{ user.get_profile.title }}</td>
+                    <td>
+                      {% if user.get_profile.staff_photo %}
+                          <img style="width:75px;" id="photo" src="{{ user.get_profile.staff_photo.url}}" alt="Profile Picture"/>
+                      {% else %}
+                          {% if user.get_profile.badge_photo %}
+                            <img style="width:50px;" id="photo" src="{{user.get_profile.badge_photo.url}}" alt="Profile Picture"/>
+                          {% endif %}
+                      {% endif %}
+                    </td>
                     <td><a href="{% url People-View_Profile user %}"><i class="icon-user"></i><span class="long">Profile</span></a></td>
                     <td><a href="{% url Personal-Timesheet user %}"><i class="icon-list-alt"></i><span class="long">Timesheet</span></a></td>
                     {% if can_add_review%}
