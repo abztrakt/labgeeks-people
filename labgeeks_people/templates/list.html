@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block pageJS %}
-<script type="text/javascript" src="/static/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() 
     { 
@@ -50,7 +50,7 @@ $(document).ready(function()
                         {% elif user.get_profile.badge_photo %}
                             <img src="{{ user.get_profile.badge_photo.url }}" alt="Profile Picture" />
                         {% else %}
-                            <img src="/static/img/stock_photo.jpg" alt="Profile Picture" />
+                            <img src="{{ STATIC_URL }}img/stock_photo.jpg" alt="Profile Picture" />
                         {% endif %}
                         </td>
                         <td>{{ user.first_name }}</td>
