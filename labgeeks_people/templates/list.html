@@ -12,8 +12,22 @@ $(document).ready(function()
                 cssHeader: 'header',
                 headers: { 4: { sorter: false}, 5: {sorter: false}, 6: {sorter: false} },
             }
-        ); 
-    } 
+        );
+        $('.nav_container').affix();
+    }
+);
+
+$(window).scroll(function() 
+    {
+        var footer_to_top = ($('#footer').position().top);
+        var scroll_top = $(document).scrollTop() + $('.nav_container').height() + 150;
+        var difference = scroll_top - footer_to_top;
+        if (scroll_top > footer_to_top) {
+            $('.nav_container').css('margin-top', 0 - difference);
+        } else {
+            $('.nav_container').css('margin-top', 0);
+         }
+    }
 );
 </script>
 {% endblock %}
@@ -25,7 +39,7 @@ $(document).ready(function()
 
     <div id="group_section_wrapper">
         {% for group in group_list %}
-    
+
         <div class="group_section">
             <a name="{{ group.group_name }}"></a><h2>{{group.group_name}}</h2>
             <table class="people">
@@ -66,15 +80,14 @@ $(document).ready(function()
             </table>
         </div>
         {% endfor %}
-    </div>
 
-    <div id="container">
-        <div id="navigation_panel" data-spy="affix">
-            <h2>Group List</h2>
-            {% for group in group_list %}
-                <a href="#{{ group.group_name }}">{{ group.group_name }}</a><br />
-            {% endfor %}
+        <div class="nav_container" data-spy="affix">
+            <div id="navigation_panel">
+                <h2>Group List</h2>
+                {% for group in group_list %}
+                    <a href="#{{ group.group_name }}">{{ group.group_name }}</a><br />
+                {% endfor %}
+            </div>
         </div>
     </div>
-
 {% endblock %}
