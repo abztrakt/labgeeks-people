@@ -3,7 +3,6 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group, Permission
 from django.core.context_processors import csrf
-from datetime import datetime
 from django.http import HttpResponseRedirect, HttpResponse
 import json
 from labgeeks_people.forms import *
@@ -11,6 +10,7 @@ from labgeeks_people.models import *
 from badger.models import Badge, Award
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import PermissionDenied
+import datetime
 
 
 @login_required
@@ -295,7 +295,7 @@ def edit_reviews(request, user):
         if form.is_valid():
             review = form.save(commit=False)
             review.user = user
-            review.date = datetime.now().date()
+            review.date = datetime.datetime.now().date()
             review.reviewer = this_user
             review.is_used_up = False
 
@@ -303,7 +303,7 @@ def edit_reviews(request, user):
                 if form2.is_valid():
                     wage_history = form2.save(commit=False)
                     wage_history.user = user
-                    wage_history.effective_date = datetime.now().date()
+                    wage_history.effective_date = datetime.datetime.now().date()
                     if last_wage_history:
                         if last_wage != wage_history.wage and wage_history.wage is not None:
                             wage_history.save()
