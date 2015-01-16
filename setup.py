@@ -11,6 +11,6 @@ setup(
     install_requires = [
         'setuptools',
         'pillow',
-        'South==0.7.3',
+        'South',
     ],
 )
