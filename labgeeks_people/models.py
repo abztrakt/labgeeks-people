@@ -1,7 +1,7 @@
 from django.db import models
-from datetime import date
 from django.contrib.auth.models import User,Permission
 from labgeeks_horae.models import TimePeriod as s_TimePeriod
+import datetime
 
 
 class EmploymentStatus(models.Model):
@@ -86,7 +86,7 @@ class UWLTReviewWeights(models.Model):
         verbose_name = "UWLT review weight"
 
     name = models.CharField(max_length=64)
-    effective_date = models.DateField(default=date.today, blank=True)
+    effective_date = models.DateField(default=datetime.date.today, blank=True)
     teamwork_multiplier = models.FloatField(default=1)
     customer_service_multiplier = models.FloatField(default=1)
     dependability_multiplier = models.FloatField(default=1)
