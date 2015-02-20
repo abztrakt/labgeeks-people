@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block pageJS %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
+<!--<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>-->
 <script type="text/javascript">
-$(document).ready(function() 
+/*$(document).ready(function() 
     { 
         $(".people").tablesorter(
             {
@@ -12,64 +12,30 @@ $(document).ready(function()
                 cssHeader: 'header',
                 headers: { 4: { sorter: false}, 5: {sorter: false}, 6: {sorter: false} },
             }
-        ); 
-    } 
+        );
+        $('.nav_container').affix();
+    }
+);*/
+
+$(window).scroll(function() 
+    {
+        var footer_to_top = ($('#footer').position().top);
+        var scroll_top = $(document).scrollTop() + $('.nav_container').height() + 150;
+        var difference = scroll_top - footer_to_top;
+        if (scroll_top > footer_to_top) {
+            $('.nav_container').css('margin-top', 0 - difference);
+        } else {
+            $('.nav_container').css('margin-top', 0);
+         }
+    }
 );
 </script>
 {% endblock %}
 
 {% block content %}
-    <div class="section">
-        <h1>Employee List</h1>
-    </div>
 
-    <div id="group_section_wrapper">
-        {% for group in group_list %}
-    
-        <div class="group_section">
-            <a name="{{ group.group_name }}"></a><h2>{{group.group_name}}</h2>
-            <table class="people">
-                <thead>
-                    <tr>
-                        <th><a href='#'>Profile Picture</a></th>
-                        <th><a href='#'>First Name</a></th>
-                        {% if view_last_names %}<th><a href='#'>Last Name</a></th>{% endif %}
-                        <th><a href='#'>NetID</a></th>
-                        <th><a href='#'>Title</a></th>
-                        <th></th>
-                        <th></th>
-                        {% if can_add_review %}<th></th>{% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                {% for user in group.users %}
-                    <tr>
-                        <td class="profile_picture">
-                        {% if user.get_profile.staff_photo %}
-                            <img src="{{ user.get_profile.staff_photo.url }}" alt="Profile Picture" />
-                        {% elif user.get_profile.badge_photo %}
-                            <img src="{{ user.get_profile.badge_photo.url }}" alt="Profile Picture" />
-                        {% else %}
-                            <img src="{{ STATIC_URL }}img/stock_photo.jpg" alt="Profile Picture" />
-                        {% endif %}
-                        </td>
-                        <td>{{ user.first_name }}</td>
-                        {% if view_last_names %}<td>{{ user.last_name }}</td>{% endif %}
-                        <td>{{ user }}</td>
-                        <td>{{ user.get_profile.title }}</td>
-                        <td><a href="{% url People-View_Profile user %}"><i class="icon-user"></i><span class="long">Profile</span></a></td>
-                        <td><a href="{% url Personal-Timesheet user %}"><i class="icon-list-alt"></i><span class="long">Timesheet</span></a></td>
-                        {% if can_add_review%}<td><a href="{% url People-Edit_Reviews user %}"><i class="icon-pencil"></i><span class="long">Create/Edit Review</span></a></td>{% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% endfor %}
-    </div>
-
-    <div id="container">
-        <div id="navigation_panel" data-spy="affix">
+    <div id="nav_container">
+        <div id="navigation_panel">
             <h2>Group List</h2>
             {% for group in group_list %}
                 <a href="#{{ group.group_name }}">{{ group.group_name }}</a><br />
@@ -77,4 +43,54 @@ $(document).ready(function()
         </div>
     </div>
 
+    <div id=list_wrapper">
+        <div class="section">
+            <h1>Employee List</h1>
+        </div>
+
+        <div id="group_section_wrapper">
+            {% for group in group_list %}
+
+            <div class="group_section">
+                <a name="{{ group.group_name }}"></a><h2>{{group.group_name}}</h2>
+                <table class="people">
+                    <thead>
+                        <tr>
+                            <th><a href='#'>Profile Picture</a></th>
+                            <th><a href='#'>First Name</a></th>
+                            {% if view_last_names %}<th><a href='#'>Last Name</a></th>{% endif %}
+                            <th><a href='#'>NetID</a></th>
+                            <th><a href='#'>Title</a></th>
+                            <th></th>
+                            <th></th>
+                            {% if can_add_review %}<th></th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in group.users %}
+                        <tr>
+                            <td class="profile_picture">
+                            {% if user.get_profile.badge_photo %}
+                                <img src="{{ user.get_profile.badge_photo.url }}" alt="Profile Picture" />
+                            {% elif user.get_profile.staff_photo %}
+                                <img src="{{ user.get_profile.staff_photo.url }}" alt="Profile Picture" />
+                            {% else %}
+                                <img src="/uploads/images/stock_photo.jpg" alt="Profile Picture" />
+                            {% endif %}
+                            </td>
+                            <td>{{ user.first_name }}</td>
+                            {% if view_last_names %}<td>{{ user.last_name }}</td>{% endif %}
+                            <td>{{ user }}</td>
+                            <td>{{ user.get_profile.title }}</td>
+                            <td><a href="{% url People-View_Profile user %}"><i class="icon-user"></i><span class="long">Profile</span></a></td>
+                            <td><a href="{% url Personal-Timesheet user %}"><i class="icon-list-alt"></i><span class="long">Timesheet</span></a></td>
+                            {% if can_add_review%}<td><a href="{% url People-Edit_Reviews user %}"><i class="icon-pencil"></i><span class="long">Create/Edit Review</span></a></td>{% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
