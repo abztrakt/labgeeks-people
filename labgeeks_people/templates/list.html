@@ -75,7 +75,7 @@ $(window).scroll(function()
                             {% elif user.get_profile.staff_photo %}
                                 <img src="{{ user.get_profile.staff_photo.url }}" alt="Profile Picture" />
                             {% else %}
-                                <img src="/uploads/images/stock_photo.jpg" alt="Profile Picture" />
+                                <img src="/static/img/stock_photo.jpg" alt="Profile Picture" />
                             {% endif %}
                             </td>
                             <td>{{ user.first_name }}</td>
