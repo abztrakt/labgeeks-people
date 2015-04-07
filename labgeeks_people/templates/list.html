@@ -3,47 +3,77 @@
 {% block pageJS %}
 <!--<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>-->
 <script type="text/javascript">
-/*$(document).ready(function() 
-    { 
-        $(".people").tablesorter(
-            {
-                cssAsc: 'headerSortUp',
-                cssDesc: 'headerSortDown',
-                cssHeader: 'header',
-                headers: { 4: { sorter: false}, 5: {sorter: false}, 6: {sorter: false} },
-            }
-        );
-        $('.nav_container').affix();
-    }
-);*/
 
-$(window).scroll(function() 
-    {
-        var footer_to_top = ($('#footer').position().top);
-        var scroll_top = $(document).scrollTop() + $('.nav_container').height() + 150;
-        var difference = scroll_top - footer_to_top;
-        if (scroll_top > footer_to_top) {
-            $('.nav_container').css('margin-top', 0 - difference);
+$(function() {
+    var nav = $('#nav_container');
+    var navHomeY = nav.offset().top;
+    var isFixed = false;
+    var $w = $(window);
+    $w.scroll(function() {
+        var scrollTop = $w.scrollTop();
+        var shouldBeFixed = scrollTop > navHomeY;
+        if (shouldBeFixed && !isFixed && $w.width() > 1370) {
+            nav.css({
+                position: 'fixed',
+                float: 'right',
+                right: '5px',
+                top: '25px'
+            });
+            isFixed = true;
+        } else if (!shouldBeFixed && isFixed && $w.width() > 1370) {
+            nav.css({
+                position: 'static',
+                top: '100px'
+            });
+            isFixed = false
+        }
+    });
+
+    $w.resize(function() {
+        if ($w.width() < 1370) {
+            nav.css({
+                float: 'none',
+                top: '0',
+                position: 'relative'
+            });
+        } else if ($w.width() > 1370) {
+            nav.css({
+                position: 'fixed',
+                top: '100px',
+                right: '5px',
+                float: 'left'
+            });
+        }
+    });
+
+    window.onload = function() {
+        if ($w.width() < 1370) {
+            nav.css({
+                float: 'none',
+                position: 'relative'
+            });
         } else {
-            $('.nav_container').css('margin-top', 0);
-         }
+            nav.css({
+                float: 'right'
+            });
+        }
     }
-);
+});
+
 </script>
 {% endblock %}
 
 {% block content %}
 
     <div id="nav_container">
-        <div id="navigation_panel">
-            <h2>Group List</h2>
-            {% for group in group_list %}
-                <a href="#{{ group.group_name }}">{{ group.group_name }}</a><br />
-            {% endfor %}
-        </div>
+        <ul class="nav">
+        {% for group in group_list %}
+            <li><a href="#{{ group.group_name }}">{{ group.group_name }}</a></li>
+        {% endfor %}
+        </ul>
     </div>
 
-    <div id=list_wrapper">
+    <div id="list_wrapper">
         <div class="section">
             <h1>Employee List</h1>
         </div>
@@ -51,7 +81,7 @@ $(window).scroll(function()
         <div id="group_section_wrapper">
             {% for group in group_list %}
 
-            <div class="group_section">
+            <section class="group_section" id="{{ group.group_name }}">
                 <a name="{{ group.group_name }}"></a><h2>{{group.group_name}}</h2>
                 <table class="people">
                     <thead>
@@ -89,8 +119,9 @@ $(window).scroll(function()
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
+            </section>
             {% endfor %}
         </div>
     </div>
+
 {% endblock %}
