@@ -51,7 +51,7 @@ def view_profile(request, name):
     """ Show a user profile.
     """
     user = User.objects.get(username=name)
-    badge_list = Badge.objects.filter(creator=user) 
+    badge_list = Badge.objects.filter(creator=user)
     if UserProfile.objects.filter(user=user):
         params = {'request': request, 'user': user,}
         #User has already created a user profile.
@@ -171,7 +171,7 @@ def create_user_profile(request, name):
             this_user = this_user.first_name
     except:
         this_user = user.first_name
-    
+
     params['message'] = message
     params['this_user'] = this_user
     return render_to_response('create_profile.html', params, context_instance=RequestContext(request))
